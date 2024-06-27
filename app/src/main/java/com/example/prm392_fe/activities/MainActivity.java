@@ -33,6 +33,8 @@ public class MainActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        binding.bottomNav.setOnApplyWindowInsetsListener(null);
+        binding.bottomNav.setPadding(0, 0, 0, 0);
         replaceFragment(new HomeFragment());
         binding.bottomNav.setOnItemSelectedListener(item -> {
             if (item.getItemId() == R.id.mHome) {
@@ -51,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
     private void replaceFragment(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.frameFragment, fragment);
+        fragmentTransaction.replace(R.id.clFragment, fragment);
         fragmentTransaction.commit();
     }
 }

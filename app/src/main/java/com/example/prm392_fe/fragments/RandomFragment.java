@@ -7,8 +7,11 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 
 import com.example.prm392_fe.R;
+import com.example.prm392_fe.databinding.FragmentRandomBinding;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -60,7 +63,12 @@ public class RandomFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        View rootview = inflater.inflate(R.layout.fragment_random, container, false);
+        Spinner spinnerMeal = rootview.findViewById(R.id.spinnerMeal);
+        String[] meals = new String[] {"Bữa sáng", "Bữa trưa", "Bữa tối"};
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, meals);
+        spinnerMeal.setAdapter(adapter);
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_random, container, false);
+        return rootview;
     }
 }
