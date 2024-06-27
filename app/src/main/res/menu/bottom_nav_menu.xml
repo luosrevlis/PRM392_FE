@@ -3,15 +3,15 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item android:id="@+id/mHome"
-        android:icon="@drawable/ic_baseline_home"
+        android:icon="@drawable/ic_home"
         android:title="Home" />
     <item android:id="@+id/mRandom"
-        android:icon="@drawable/ic_baseline_random"
+        android:icon="@drawable/ic_random"
         android:title="Random" />
     <item android:id="@+id/mCart"
-        android:icon="@drawable/ic_baseline_cart"
+        android:icon="@drawable/ic_cart"
         android:title="Cart" />
     <item android:id="@+id/mSettings"
-        android:icon="@drawable/ic_baseline_settings"
+        android:icon="@drawable/ic_settings"
         android:title="Settings" />
 </menu>
