@@ -43,4 +43,9 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
+
+    implementation("com.squareup.retrofit2:retrofit:2.5.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.4.0")
+    implementation("com.squareup.okhttp3:logging-interceptor:4.9.3")
+    implementation("com.squareup.okhttp3:logging-interceptor:4.9.3")
 }
