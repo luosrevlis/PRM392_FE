@@ -16,8 +16,8 @@ import androidx.fragment.app.Fragment;
 
 import com.example.prm392_fe.R;
 import com.example.prm392_fe.activity.MainActivity;
-import com.example.prm392_fe.api.LoginRepository;
-import com.example.prm392_fe.api.LoginService;
+import com.example.prm392_fe.api.AuthorizeRepository;
+import com.example.prm392_fe.api.AuthorizeService;
 import com.example.prm392_fe.model.LoginRequest;
 import com.example.prm392_fe.model.LoginResponse;
 
@@ -29,7 +29,7 @@ public class LoginTabFragment extends Fragment {
     EditText etEmail, etPassword;
     Button btnLogin;
     float v = 0;
-    private LoginService LoginService;
+    private AuthorizeService AuthorizeService;
     private SharedPreferences sharedPreferences;
 
     @Override
@@ -52,7 +52,7 @@ public class LoginTabFragment extends Fragment {
         etPassword.animate().translationY(0).alpha(1).setDuration(800).setStartDelay(500).start();
         btnLogin.animate().translationY(0).alpha(1).setDuration(800).setStartDelay(700).start();
 
-        LoginService = LoginRepository.getAPIService(getContext());
+        AuthorizeService = AuthorizeRepository.getAPIService(getContext());
         sharedPreferences = getActivity().getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE);
 
         btnLogin.setOnClickListener(v -> performLogin());
@@ -69,24 +69,24 @@ public class LoginTabFragment extends Fragment {
         String password = etPassword.getText().toString().trim();
 
         LoginRequest loginRequest = new LoginRequest(email, password);
-        Call<LoginResponse> call = LoginService.login(loginRequest);
-        call.enqueue(new Callback<LoginResponse>() {
-            @Override
-            public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
-                if (response.isSuccessful()) {
-                    LoginResponse loginResponse = response.body();
-                    if (loginResponse != null && loginResponse.getStatusCode() == 200) {
-                        String token = loginResponse.getResult();
-                        saveToken(token);
-                        navigateToMainActivity();
-                        Toast.makeText(getActivity(), "Login Successful", Toast.LENGTH_SHORT).show();
-                    } else {
-                        String message = "Login failed. Please try again.";
-                        if (loginResponse != null) {
-                            message = loginResponse.getMessage();
+        Call<LoginResponse> call = AuthorizeService.login(loginRequest);
+            call.enqueue(new Callback<LoginResponse>() {
+                @Override
+                public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
+                    if (response.isSuccessful()) {
+                        LoginResponse loginResponse = response.body();
+                        if (loginResponse != null && loginResponse.getStatusCode() == 200) {
+                            String token = loginResponse.getResult();
+                            saveToken(token);
+                            navigateToMainActivity();
+                            Toast.makeText(getActivity(), "Login Successful", Toast.LENGTH_SHORT).show();
+                        } else {
+                            String message = "Login failed. Please try again.";
+                            if (loginResponse != null) {
+                                message = loginResponse.getMessage();
+                            }
+                            Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
                         }
-                        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
-                    }
                 } else {
                     Toast.makeText(getActivity(), "Login failed. Please try again.", Toast.LENGTH_SHORT).show();
                     Log.e("LoginTabFragment", "Failed to login. Code: " + response.code());

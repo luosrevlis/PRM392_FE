@@ -26,10 +26,15 @@ public class LoginAdapter extends FragmentPagerAdapter {
     }
 
     @NonNull
-    public Fragment getItem(int position){
-        if (position == 1) {
-            return new SignUpTabFragment();
+    @Override
+    public Fragment getItem(int position) {
+        switch (position) {
+            case 0:
+                return new LoginTabFragment();
+            case 1:
+                return new SignUpTabFragment();
+            default:
+                return null;
         }
-        return new LoginTabFragment();
     }
 }
