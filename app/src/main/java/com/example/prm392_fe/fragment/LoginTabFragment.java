@@ -31,6 +31,7 @@ public class LoginTabFragment extends Fragment {
     float v = 0;
     private LoginService LoginService;
     private SharedPreferences sharedPreferences;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup viewGroup, Bundle bundle){
         ViewGroup root = (ViewGroup) inflater.inflate(R.layout.fragment_login, viewGroup, false);
@@ -69,35 +70,35 @@ public class LoginTabFragment extends Fragment {
 
         LoginRequest loginRequest = new LoginRequest(email, password);
         Call<LoginResponse> call = LoginService.login(loginRequest);
-            call.enqueue(new Callback<LoginResponse>() {
-                @Override
-                public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
-                    if (response.isSuccessful()) {
-                        LoginResponse loginResponse = response.body();
-                        if (loginResponse != null && loginResponse.getStatusCode() == 200) {
-                            String token = loginResponse.getResult();
-                            saveToken(token);
-                            navigateToMainActivity();
-                            Toast.makeText(getActivity(), "Login Successful", Toast.LENGTH_SHORT).show();
-                        } else {
-                            String message = "Login failed. Please try again.";
-                            if (loginResponse != null) {
-                                message = loginResponse.getMessage();
-                            }
-                            Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
-                        }
+        call.enqueue(new Callback<LoginResponse>() {
+            @Override
+            public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
+                if (response.isSuccessful()) {
+                    LoginResponse loginResponse = response.body();
+                    if (loginResponse != null && loginResponse.getStatusCode() == 200) {
+                        String token = loginResponse.getResult();
+                        saveToken(token);
+                        navigateToMainActivity();
+                        Toast.makeText(getActivity(), "Login Successful", Toast.LENGTH_SHORT).show();
                     } else {
-                        Toast.makeText(getActivity(), "Login failed. Please try again.", Toast.LENGTH_SHORT).show();
-                        Log.e("LoginTabFragment", "Failed to login. Code: " + response.code());
+                        String message = "Login failed. Please try again.";
+                        if (loginResponse != null) {
+                            message = loginResponse.getMessage();
+                        }
+                        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
                     }
+                } else {
+                    Toast.makeText(getActivity(), "Login failed. Please try again.", Toast.LENGTH_SHORT).show();
+                    Log.e("LoginTabFragment", "Failed to login. Code: " + response.code());
                 }
+            }
 
-                @Override
-                public void onFailure(Call<LoginResponse> call, Throwable t) {
-                    Toast.makeText(getActivity(), "Network error. Please try again.", Toast.LENGTH_SHORT).show();
-                    Log.e("LoginTabFragment", "Login failed", t);
-                }
-            });
+            @Override
+            public void onFailure(Call<LoginResponse> call, Throwable t) {
+                Toast.makeText(getActivity(), "Network error. Please try again.", Toast.LENGTH_SHORT).show();
+                Log.e("LoginTabFragment", "Login failed", t);
+            }
+        });
     }
 
     private boolean validateFields() {

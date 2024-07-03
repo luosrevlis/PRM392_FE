@@ -12,7 +12,7 @@ import retrofit2.http.POST;
 
 public interface LoginService {
 
-    String AUTH = "api/Auth";
+    String AUTH = "/api/Auth";
     @POST(AUTH + "/login")
     Call<LoginResponse> login(@Body LoginRequest loginRequest);
 
