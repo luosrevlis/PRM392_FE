@@ -1,8 +1,10 @@
 package com.example.prm392_fe.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -24,6 +26,7 @@ import com.example.prm392_fe.model.Dish;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
+    public static final int REQUEST_CODE_RANDOM_DISH = 1;
     ActivityMainBinding binding;
     Cart cart;
 
@@ -42,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
         binding.bottomNav.setPadding(0, 0, 0, 0);
 
         cart = new Cart();
+        cart.setItems(new ArrayList<>());
 
         replaceFragment(new HomeFragment());
         binding.bottomNav.setOnItemSelectedListener(item -> {
@@ -50,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
             } else if (item.getItemId() == R.id.mRandom) {
                 replaceFragment(new RandomFragment());
             } else if (item.getItemId() == R.id.mCart) {
-                replaceFragment(prepareCartFragment());
+                replaceFragment(CartFragment.newInstance(cart));
             } else if (item.getItemId() == R.id.mSettings) {
                 replaceFragment(new SettingsFragment());
             }
@@ -58,19 +62,21 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CODE_RANDOM_DISH && resultCode == RESULT_OK && data != null) {
+            // TODO check item exists
+            cart.getItems().add((CartItem) data.getSerializableExtra("cartItem"));
+            replaceFragment(CartFragment.newInstance(cart));
+            binding.bottomNav.setSelectedItemId(R.id.mCart);
+        }
+    }
+
     private void replaceFragment(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.clFragment, fragment);
         fragmentTransaction.commit();
-    }
-
-    private CartFragment prepareCartFragment() {
-        ArrayList<CartItem> items = new ArrayList<>();
-        for (int i = 0; i < 5; i++) {
-            items.add(new CartItem(1, 1, new Dish(1, "Dish name", 100000, "https://picsum.photos/200/200")));
-        }
-        cart.setItems(items);
-        return CartFragment.newInstance(cart);
     }
 }
