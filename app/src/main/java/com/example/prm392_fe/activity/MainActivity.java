@@ -17,10 +17,15 @@ import com.example.prm392_fe.fragment.CartFragment;
 import com.example.prm392_fe.fragment.HomeFragment;
 import com.example.prm392_fe.fragment.RandomFragment;
 import com.example.prm392_fe.fragment.SettingsFragment;
+import com.example.prm392_fe.model.Cart;
+import com.example.prm392_fe.model.CartItem;
+import com.example.prm392_fe.model.Dish;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
-
     ActivityMainBinding binding;
+    Cart cart;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +40,9 @@ public class MainActivity extends AppCompatActivity {
         });
         binding.bottomNav.setOnApplyWindowInsetsListener(null);
         binding.bottomNav.setPadding(0, 0, 0, 0);
+
+        cart = new Cart();
+
         replaceFragment(new HomeFragment());
         binding.bottomNav.setOnItemSelectedListener(item -> {
             if (item.getItemId() == R.id.mHome) {
@@ -42,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
             } else if (item.getItemId() == R.id.mRandom) {
                 replaceFragment(new RandomFragment());
             } else if (item.getItemId() == R.id.mCart) {
-                replaceFragment(new CartFragment());
+                replaceFragment(prepareCartFragment());
             } else if (item.getItemId() == R.id.mSettings) {
                 replaceFragment(new SettingsFragment());
             }
@@ -55,5 +63,14 @@ public class MainActivity extends AppCompatActivity {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.clFragment, fragment);
         fragmentTransaction.commit();
+    }
+
+    private CartFragment prepareCartFragment() {
+        ArrayList<CartItem> items = new ArrayList<>();
+        for (int i = 0; i < 5; i++) {
+            items.add(new CartItem(1, 1, new Dish(1, "Dish name", 100000, "https://picsum.photos/200/200")));
+        }
+        cart.setItems(items);
+        return CartFragment.newInstance(cart);
     }
 }

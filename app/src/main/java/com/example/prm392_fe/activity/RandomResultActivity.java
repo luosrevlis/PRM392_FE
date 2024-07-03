@@ -2,7 +2,6 @@ package com.example.prm392_fe.activity;
 
 import static com.example.prm392_fe.api.APIClient.getClient;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.FrameLayout;
@@ -67,6 +66,7 @@ public class RandomResultActivity extends AppCompatActivity {
         cartItemAdapter.setIncListener(position -> updateSubtotal());
         cartItemAdapter.setDecListener(position -> updateSubtotal());
         cartItemAdapter.setQuantityListener(position -> updateSubtotal());
+        cartItemAdapter.setCloseListener(position -> updateSubtotal());
 
         rvDishes = findViewById(R.id.rvDishes);
         rvDishes.setLayoutManager(new LinearLayoutManager(this));
@@ -84,6 +84,10 @@ public class RandomResultActivity extends AppCompatActivity {
         subtotal = 0;
         for (CartItem item: items) {
             subtotal += item.getDish().getPrice() * item.getQuantity();
+        }
+        if (subtotal == 0) {
+            finish();
+            return;
         }
         tvSubtotalValue.setText(String.format(Locale.ENGLISH, "%.1fk", subtotal / 1000));
     }

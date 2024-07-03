@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.prm392_fe.R;
@@ -33,6 +34,7 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.CartIt
     OnItemClickListener incListener;
     OnItemClickListener decListener;
     OnItemClickListener quantityListener;
+    OnItemClickListener closeListener;
 
     public CartItemAdapter(Context context, ArrayList<CartItem> items) {
         this.context = context;
@@ -59,6 +61,7 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.CartIt
         holder.tvName.setText(dish.getName());
         holder.tvUnitPrice.setText(formatAmount(dish.getPrice() / 1000));
         holder.tvTotalPrice.setText(formatAmount(dish.getPrice() * item.getQuantity() / 1000));
+
         holder.etQuantity.setText("" + item.getQuantity());
         holder.etQuantity.addTextChangedListener(new TextWatcher() {
             @Override
@@ -102,6 +105,12 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.CartIt
             holder.tvTotalPrice.setText(formatAmount(dish.getPrice() * item.getQuantity() / 1000));
             decListener.onItemClick(holder.getAdapterPosition());
         });
+
+        holder.ivClose.setOnClickListener(v -> {
+            items.remove(holder.getAdapterPosition());
+            notifyItemRemoved(holder.getAdapterPosition());
+            closeListener.onItemClick(holder.getAdapterPosition());
+        });
     }
 
     @Override
@@ -119,16 +128,18 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.CartIt
 
     public class CartItemViewHolder extends RecyclerView.ViewHolder {
         ImageView ivImage;
+        ImageView ivClose;
         TextView tvName;
         TextView tvUnitPrice;
         TextView tvTotalPrice;
         EditText etQuantity;
-        Button btnInc;
-        Button btnDec;
+        AppCompatButton btnInc;
+        AppCompatButton btnDec;
 
         public CartItemViewHolder(@NonNull View itemView) {
             super(itemView);
             ivImage = itemView.findViewById(R.id.ivImage);
+            ivClose = itemView.findViewById(R.id.ivClose);
             tvName = itemView.findViewById(R.id.tvName);
             tvUnitPrice = itemView.findViewById(R.id.tvUnitPrice);
             tvTotalPrice = itemView.findViewById(R.id.tvTotalPrice);
