@@ -1,4 +1,4 @@
-package com.example.prm392_fe.fragments;
+package com.example.prm392_fe.fragment;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -19,7 +19,7 @@ public class SignUpTabFragment extends Fragment {
     float v = 0;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup viewGroup, Bundle bundle){
-        ViewGroup root = (ViewGroup) inflater.inflate(R.layout.activity_register, viewGroup, false);
+        ViewGroup root = (ViewGroup) inflater.inflate(R.layout.fragment_register, viewGroup, false);
 
         etEmail = root.findViewById(R.id.etEmail);
         etPassword = root.findViewById(R.id.etPassword);

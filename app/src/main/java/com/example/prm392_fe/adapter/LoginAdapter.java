@@ -1,4 +1,4 @@
-package com.example.prm392_fe.fragments;
+package com.example.prm392_fe.adapter;
 
 import android.content.Context;
 
@@ -6,6 +6,9 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
+
+import com.example.prm392_fe.fragment.LoginTabFragment;
+import com.example.prm392_fe.fragment.SignUpTabFragment;
 
 public class LoginAdapter extends FragmentPagerAdapter {
     private Context context;
@@ -22,16 +25,11 @@ public class LoginAdapter extends FragmentPagerAdapter {
         return totalTabs;
     }
 
+    @NonNull
     public Fragment getItem(int position){
-        switch (position){
-            case 0:
-                LoginTabFragment loginTabFragment = new LoginTabFragment();
-                return loginTabFragment;
-            case 1:
-                SignUpTabFragment signUpTabFragment = new SignUpTabFragment();
-                return signUpTabFragment;
-            default:
-                return null;
+        if (position == 1) {
+            return new SignUpTabFragment();
         }
+        return new LoginTabFragment();
     }
 }

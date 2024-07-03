@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.SettingsFragment">
+    tools:context=".fragment.SettingsFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <RelativeLayout
@@ -20,7 +20,7 @@
                 android:id="@+id/app_logo"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:src="@drawable/user" />
+                android:src="@drawable/ic_user_white" />
 
             <TextView
                 android:id="@+id/user_profile"
@@ -28,7 +28,6 @@
                 android:layout_height="wrap_content"
                 android:text="Edgar Park"
                 android:textSize="30sp"
-                android:verticalAlignment="center"
                 android:textStyle="bold"
                 android:textColor="#FFFFFF"
                 android:padding="5dp"/>
@@ -57,23 +56,25 @@
                     android:id="@+id/icon_setting"
                     android:layout_width="25dp"
                     android:layout_height="25dp"
-                    android:src="@drawable/user"
+                    android:src="@drawable/ic_user_png"
                     android:layout_marginHorizontal="10dp"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Thông tin cá nhân"
-                    android:textSize="16dp"
+                    android:textSize="16sp"
                     android:padding="2dp"
                     android:textStyle="bold"
-                    android:layout_toRightOf="@+id/icon_setting" />
+                    android:layout_toEndOf="@+id/icon_setting" />
 
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:src="@drawable/right_arrow"
-                    android:layout_alignParentRight="true"  />
+                    android:src="@drawable/ic_chevron_right"
+                    android:scaleX="2"
+                    android:scaleY="2"
+                    android:layout_alignParentEnd="true"  />
 
             </RelativeLayout>
 
@@ -92,23 +93,25 @@
                     android:id="@+id/icon_setting2"
                     android:layout_width="25dp"
                     android:layout_height="25dp"
-                    android:src="@drawable/support"
+                    android:src="@drawable/ic_support_png"
                     android:layout_marginHorizontal="10dp"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Trung tâm trợ giúp"
-                    android:textSize="16dp"
+                    android:textSize="16sp"
                     android:padding="2dp"
                     android:textStyle="bold"
-                    android:layout_toRightOf="@+id/icon_setting2" />
+                    android:layout_toEndOf="@+id/icon_setting2" />
 
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:src="@drawable/right_arrow"
-                    android:layout_alignParentRight="true"  />
+                    android:src="@drawable/ic_chevron_right"
+                    android:scaleX="2"
+                    android:scaleY="2"
+                    android:layout_alignParentEnd="true"  />
 
             </RelativeLayout>
 
@@ -127,23 +130,25 @@
                     android:id="@+id/icon_setting3"
                     android:layout_width="25dp"
                     android:layout_height="25dp"
-                    android:src="@drawable/insurance"
+                    android:src="@drawable/ic_insurance_png"
                     android:layout_marginHorizontal="10dp"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Chính sách quy định"
-                    android:textSize="16dp"
+                    android:textSize="16sp"
                     android:padding="2dp"
                     android:textStyle="bold"
-                    android:layout_toRightOf="@+id/icon_setting3" />
+                    android:layout_toEndOf="@+id/icon_setting3" />
 
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:src="@drawable/right_arrow"
-                    android:layout_alignParentRight="true"  />
+                    android:src="@drawable/ic_chevron_right"
+                    android:scaleX="2"
+                    android:scaleY="2"
+                    android:layout_alignParentEnd="true"  />
 
             </RelativeLayout>
 
@@ -162,35 +167,36 @@
                     android:id="@+id/icon_setting4"
                     android:layout_width="25dp"
                     android:layout_height="25dp"
-                    android:src="@drawable/info"
+                    android:src="@drawable/ic_info_png"
                     android:layout_marginHorizontal="10dp"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Về chúng tôi"
-                    android:textSize="16dp"
+                    android:textSize="16sp"
                     android:padding="2dp"
                     android:textStyle="bold"
-                    android:layout_toRightOf="@+id/icon_setting4" />
+                    android:layout_toEndOf="@+id/icon_setting4" />
 
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:src="@drawable/right_arrow"
-                    android:layout_alignParentRight="true"  />
+                    android:src="@drawable/ic_chevron_right"
+                    android:scaleX="2"
+                    android:scaleY="2"
+                    android:layout_alignParentEnd="true" />
 
             </RelativeLayout>
 
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/logout_button"
                 android:background="@drawable/rectangle_green_rounded_20dp"
                 android:layout_margin="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/aboutus"
                 android:text="Đăng xuất"
-                />
+                android:textColor="@color/white"/>
         </LinearLayout>
 
 

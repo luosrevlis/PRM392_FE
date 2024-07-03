@@ -1,4 +1,4 @@
-package com.example.prm392_fe.fragments;
+package com.example.prm392_fe.fragment;
 
 import android.os.Bundle;
 
@@ -7,18 +7,15 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.Spinner;
 
 import com.example.prm392_fe.R;
-import com.example.prm392_fe.databinding.FragmentRandomBinding;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link RandomFragment#newInstance} factory method to
+ * Use the {@link SettingsFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class RandomFragment extends Fragment {
+public class SettingsFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -29,7 +26,7 @@ public class RandomFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public RandomFragment() {
+    public SettingsFragment() {
         // Required empty public constructor
     }
 
@@ -39,11 +36,11 @@ public class RandomFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment RandomFragment.
+     * @return A new instance of fragment SettingsFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static RandomFragment newInstance(String param1, String param2) {
-        RandomFragment fragment = new RandomFragment();
+    public static SettingsFragment newInstance(String param1, String param2) {
+        SettingsFragment fragment = new SettingsFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -63,12 +60,7 @@ public class RandomFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootview = inflater.inflate(R.layout.fragment_random, container, false);
-        Spinner spinnerMeal = rootview.findViewById(R.id.spinnerMeal);
-        String[] meals = new String[] {"Bữa sáng", "Bữa trưa", "Bữa tối"};
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, meals);
-        spinnerMeal.setAdapter(adapter);
         // Inflate the layout for this fragment
-        return rootview;
+        return inflater.inflate(R.layout.fragment_settings, container, false);
     }
 }

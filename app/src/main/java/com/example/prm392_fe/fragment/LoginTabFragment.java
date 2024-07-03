@@ -1,4 +1,4 @@
-package com.example.prm392_fe.fragments;
+package com.example.prm392_fe.fragment;
 
 import android.content.Context;
 import android.content.Intent;
@@ -15,8 +15,7 @@ import android.widget.Toast;
 import androidx.fragment.app.Fragment;
 
 import com.example.prm392_fe.R;
-import com.example.prm392_fe.activities.MainActivity;
-import com.example.prm392_fe.api.APIClient;
+import com.example.prm392_fe.activity.MainActivity;
 import com.example.prm392_fe.api.LoginRepository;
 import com.example.prm392_fe.api.LoginService;
 import com.example.prm392_fe.model.LoginRequest;
@@ -27,7 +26,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class LoginTabFragment extends Fragment {
-
     EditText etEmail, etPassword;
     Button btnLogin;
     float v = 0;
@@ -35,7 +33,7 @@ public class LoginTabFragment extends Fragment {
     private SharedPreferences sharedPreferences;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup viewGroup, Bundle bundle){
-        ViewGroup root = (ViewGroup) inflater.inflate(R.layout.activity_login, viewGroup, false);
+        ViewGroup root = (ViewGroup) inflater.inflate(R.layout.fragment_login, viewGroup, false);
 
         etEmail = root.findViewById(R.id.etEmail);
         etPassword = root.findViewById(R.id.etPassword);
@@ -56,25 +54,18 @@ public class LoginTabFragment extends Fragment {
         LoginService = LoginRepository.getAPIService(getContext());
         sharedPreferences = getActivity().getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE);
 
-        btnLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                performLogin();
-//                login();
-            }
-        });
+        btnLogin.setOnClickListener(v -> performLogin());
 
         return root;
     }
 
     private void performLogin() {
-        String email = etEmail.getText().toString().trim();
-        String password = etPassword.getText().toString().trim();
-
-        if (email.isEmpty() || password.isEmpty()) {
-            Toast.makeText(getContext(), "Please fill all fields", Toast.LENGTH_SHORT).show();
+        if (!validateFields()) {
             return;
         }
+
+        String email = etEmail.getText().toString().trim();
+        String password = etPassword.getText().toString().trim();
 
         LoginRequest loginRequest = new LoginRequest(email, password);
         Call<LoginResponse> call = LoginService.login(loginRequest);
@@ -107,6 +98,18 @@ public class LoginTabFragment extends Fragment {
                     Log.e("LoginTabFragment", "Login failed", t);
                 }
             });
+    }
+
+    private boolean validateFields() {
+        if (etEmail.getText().toString().trim().isEmpty()) {
+            etEmail.setError("Email is required");
+            return false;
+        }
+        if (etPassword.getText().toString().trim().isEmpty()) {
+            etPassword.setError("Password is required");
+            return false;
+        }
+        return true;
     }
 
     private void saveToken(String token) {

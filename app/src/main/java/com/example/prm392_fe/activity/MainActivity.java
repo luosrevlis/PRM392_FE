@@ -1,4 +1,4 @@
-package com.example.prm392_fe.activities;
+package com.example.prm392_fe.activity;
 
 import android.os.Bundle;
 
@@ -13,10 +13,10 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.prm392_fe.R;
 import com.example.prm392_fe.databinding.ActivityMainBinding;
-import com.example.prm392_fe.fragments.CartFragment;
-import com.example.prm392_fe.fragments.HomeFragment;
-import com.example.prm392_fe.fragments.RandomFragment;
-import com.example.prm392_fe.fragments.SettingsFragment;
+import com.example.prm392_fe.fragment.CartFragment;
+import com.example.prm392_fe.fragment.HomeFragment;
+import com.example.prm392_fe.fragment.RandomFragment;
+import com.example.prm392_fe.fragment.SettingsFragment;
 
 public class MainActivity extends AppCompatActivity {
 
