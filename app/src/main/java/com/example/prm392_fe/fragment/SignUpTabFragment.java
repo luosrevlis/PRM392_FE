@@ -113,26 +113,26 @@ public class SignUpTabFragment extends Fragment {
                     if (response.isSuccessful()) {
                         RegisterResponse registerResponse = response.body();
                         if (registerResponse != null && registerResponse.getStatusCode() == 200) {
-                            Toast.makeText(getActivity(), "Register Successful", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getActivity(), "Đăng ký tài khoản thành công!", Toast.LENGTH_SHORT).show();
 
                             ViewPager viewPager = getActivity().findViewById(R.id.view_pager);
                             viewPager.setCurrentItem(0);
                         } else {
-                            String message = "Register failed. Please try again.";
+                            String message = "Đăng ký thất bại. Hãy thử lại sau.";
                             if (registerResponse != null) {
                                 message = registerResponse.getMessage();
                             }
                             Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
                         }
                     } else {
-                        Toast.makeText(getActivity(), "Register failed. Please try again.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), "Đăng ký thất bại. Hãy thử lại sau.", Toast.LENGTH_SHORT).show();
                         Log.e("SignUpTabFragment", "Failed to register. Code: " + response.code());
                     }
                 }
 
                 @Override
                 public void onFailure(Call<RegisterResponse> call, Throwable t) {
-                    Toast.makeText(getActivity(), "Network error. Please try again.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "Lỗi kết nối. Hãy thử lại sau.", Toast.LENGTH_SHORT).show();
                     Log.e("SignUpTabFragment", "Login failed", t);
                 }
             });
