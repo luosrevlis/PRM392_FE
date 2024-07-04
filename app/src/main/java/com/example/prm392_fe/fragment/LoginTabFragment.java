@@ -15,11 +15,13 @@ import android.widget.Toast;
 import androidx.fragment.app.Fragment;
 
 import com.example.prm392_fe.R;
+import com.example.prm392_fe.activity.AdminActivity;
 import com.example.prm392_fe.activity.MainActivity;
 import com.example.prm392_fe.api.AuthorizeRepository;
 import com.example.prm392_fe.api.AuthorizeService;
 import com.example.prm392_fe.model.LoginRequest;
 import com.example.prm392_fe.model.LoginResponse;
+import com.example.prm392_fe.model.LoginResult;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -76,9 +78,14 @@ public class LoginTabFragment extends Fragment {
                 if (response.isSuccessful()) {
                     LoginResponse loginResponse = response.body();
                     if (loginResponse != null && loginResponse.getStatusCode() == 200) {
-                        String token = loginResponse.getResult();
-                        saveToken(token);
-                        navigateToMainActivity();
+                        LoginResult loginResult = loginResponse.getLoginResult();
+                        saveToken(loginResult.getToken());
+                        if (loginResult.isAdmin()){
+                            navigateToAdminActivity();
+                        }
+                        else {
+                            navigateToMainActivity();
+                        }
                         Toast.makeText(getActivity(), "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
                     } else {
                         String message = "Đăng nhập thất bại. Hãy thử lại sau.";
@@ -121,6 +128,12 @@ public class LoginTabFragment extends Fragment {
 
     private void navigateToMainActivity() {
         Intent intent = new Intent(getActivity(), MainActivity.class);
+        startActivity(intent);
+        getActivity().finish();
+    }
+
+    private void navigateToAdminActivity(){
+        Intent intent = new Intent(getActivity(), AdminActivity.class);
         startActivity(intent);
         getActivity().finish();
     }
