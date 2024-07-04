@@ -79,7 +79,7 @@ public class RegisterRequest {
     }
 
     public boolean isConfirmPasswordValid() {
-        return !TextUtils.isEmpty(confirmPassword) && confirmPassword.length() >= 6;
+        return !TextUtils.isEmpty(confirmPassword);
     }
 
     public boolean isFullNameValid() {
@@ -99,33 +99,31 @@ public class RegisterRequest {
         List<String> errors = new ArrayList<>();
 
         if (TextUtils.isEmpty(email)) {
-            errors.add("Email cannot be empty");
+            errors.add("Không được để Email trống");
         } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            errors.add("Invalid email format");
+            errors.add("Email sai format");
         }
 
         if (TextUtils.isEmpty(password)) {
-            errors.add("Password cannot be empty");
+            errors.add("Không được để Password trống");
         } else if (!PASSWORD_PATTERN.matcher(password).matches()) {
-            errors.add("Password must be at least 8 characters long, contain one uppercase letter, one lowercase letter, one number, and one special character");
+            errors.add("Password phải từ 8 ký tự trở lên, 1 chữ in hoa, 1 chữ thường, 1 số, và 1 ký tự đặc biệt");
         }
 
         if (TextUtils.isEmpty(confirmPassword)) {
-            errors.add("Confirm Password cannot be empty");
-        } else if (confirmPassword.length() < 6) {
-            errors.add("Confirm Password should have at least 6 characters");
+            errors.add("Không được để Confirm Password trống");
         }
 
         if (!passwordsMatch()) {
-            errors.add("Passwords do not match");
+            errors.add("Confirm Passwords không trùng với Password");
         }
 
         if (TextUtils.isEmpty(fullName)) {
-            errors.add("Full Name cannot be empty");
+            errors.add("Không được để Tên trống");
         }
 
         if (TextUtils.isEmpty(address)) {
-            errors.add("Address cannot be empty");
+            errors.add("Không được để Địa chỉ trống");
         }
 
         return errors;
