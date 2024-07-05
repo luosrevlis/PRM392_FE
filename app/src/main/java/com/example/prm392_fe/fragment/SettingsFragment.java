@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,6 +20,7 @@ import androidx.fragment.app.Fragment;
 import com.example.prm392_fe.R;
 import com.example.prm392_fe.activity.LoginActivity;
 import com.example.prm392_fe.activity.MainActivity;
+import com.example.prm392_fe.activity.UserProfileActivity;
 import com.example.prm392_fe.api.DishService;
 import com.example.prm392_fe.api.SettingService;
 import com.example.prm392_fe.model.UserInfo;
@@ -68,6 +70,7 @@ public class SettingsFragment extends Fragment {
     TextView userName;
     SettingService settingService;
     Button logout;
+    RelativeLayout info;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -124,6 +127,7 @@ public class SettingsFragment extends Fragment {
         startActivity(intent);
         getActivity().finish();
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -133,9 +137,18 @@ public class SettingsFragment extends Fragment {
         settingService = getClient(getContext()).create(SettingService.class);
         userName = rootview.findViewById(R.id.username);
         logout = rootview.findViewById(R.id.logout_button);
+        info = rootview.findViewById(R.id.information);
         getCurrentUser();
         logout.animate().translationY(0).alpha(1).setDuration(800).setStartDelay(700).start();
         logout.setOnClickListener(v -> performLogout());
+        info.setOnClickListener(v -> navigateToUserProfile());
         return rootview;
     }
+
+    public void navigateToUserProfile() {
+        Intent intent = new Intent(getActivity(), UserProfileActivity.class);
+        startActivity(intent);
+        getActivity().finish();
+    }
+
 }

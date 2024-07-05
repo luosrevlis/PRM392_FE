@@ -26,7 +26,7 @@
                 android:id="@+id/username"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Edgar Park"
+                android:text=""
                 android:textSize="30sp"
                 android:textStyle="bold"
                 android:textColor="#FFFFFF"
@@ -50,7 +50,8 @@
                 android:paddingHorizontal="20dp"
                 android:paddingVertical="15dp"
                 android:baselineAligned="true"
-                android:background="@drawable/ic_underline">
+                android:background="@drawable/ic_underline"
+                android:clickable="true">
 
                 <ImageView
                     android:id="@+id/icon_setting"
