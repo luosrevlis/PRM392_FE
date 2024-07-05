@@ -3,18 +3,22 @@ package com.example.prm392_fe.fragment;
 import static com.example.prm392_fe.api.APIClient.getClient;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
 import com.example.prm392_fe.R;
+import com.example.prm392_fe.activity.LoginActivity;
+import com.example.prm392_fe.activity.MainActivity;
 import com.example.prm392_fe.api.DishService;
 import com.example.prm392_fe.api.SettingService;
 import com.example.prm392_fe.model.UserInfo;
@@ -63,6 +67,7 @@ public class SettingsFragment extends Fragment {
 
     TextView userName;
     SettingService settingService;
+    Button logout;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -105,6 +110,20 @@ public class SettingsFragment extends Fragment {
             });
 
     }
+    private void performLogout() {
+        deleteToken();
+        navigateToLogin();
+    }
+    private void deleteToken() {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.remove("token"); // Remove the key "token"
+        editor.apply();
+    }
+    private void navigateToLogin() {
+        Intent intent = new Intent(getActivity(), LoginActivity.class);
+        startActivity(intent);
+        getActivity().finish();
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -113,7 +132,10 @@ public class SettingsFragment extends Fragment {
         sharedPreferences = getActivity().getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE);
         settingService = getClient(getContext()).create(SettingService.class);
         userName = rootview.findViewById(R.id.username);
+        logout = rootview.findViewById(R.id.logout_button);
         getCurrentUser();
+        logout.animate().translationY(0).alpha(1).setDuration(800).setStartDelay(700).start();
+        logout.setOnClickListener(v -> performLogout());
         return rootview;
     }
 }
