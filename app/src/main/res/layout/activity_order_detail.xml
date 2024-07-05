@@ -35,15 +35,15 @@
         app:layout_constraintTop_toBottomOf="@id/tvTitle" />
 
     <TextView
-        android:id="@+id/tvCustomerEmail"
+        android:id="@+id/tvCustomerAddress"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
         android:layout_marginStart="40dp"
-        android:text="a@gmail.com"
+        android:text="123 Đường D2, Phường 1, Q1, TP HCM"
         android:textSize="16sp"
         android:drawablePadding="8dp"
-        app:drawableLeftCompat="@drawable/ic_email"
+        app:drawableLeftCompat="@drawable/ic_location"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvCustomerName" />
@@ -60,7 +60,7 @@
         app:drawableStartCompat="@drawable/ic_time"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvCustomerEmail" />
+        app:layout_constraintTop_toBottomOf="@id/tvCustomerAddress" />
 
     <TextView
         android:id="@+id/tvSubtotal"
