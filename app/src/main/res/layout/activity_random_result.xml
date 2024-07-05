@@ -19,32 +19,6 @@
 
         <FrameLayout
             style="?android:attr/buttonStyle"
-            android:id="@+id/btnAdd"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:background="@drawable/rectangle_green_rounded_20dp">
-
-            <TextView
-                style="?android:attr/buttonStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:background="@null"
-                android:clickable="false"
-                android:drawableStart="@drawable/ic_cart_white"
-                android:drawablePadding="8dp"
-                android:focusable="false"
-                android:gravity="center"
-                android:minHeight="0dp"
-                android:minWidth="0dp"
-                android:text="Thêm vào giỏ hàng"
-                android:textColor="#ffffff"
-                android:textAllCaps="false"/>
-        </FrameLayout>
-
-        <FrameLayout
-            style="?android:attr/buttonStyle"
             android:id="@+id/btnRedo"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -68,6 +42,33 @@
                 android:textAllCaps="false"/>
         </FrameLayout>
 
+        <FrameLayout
+            style="?android:attr/buttonStyle"
+            android:id="@+id/btnAdd"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:layout_marginStart="20dp"
+            android:background="@drawable/rectangle_green_rounded_20dp">
+
+            <TextView
+                style="?android:attr/buttonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@null"
+                android:clickable="false"
+                android:drawableStart="@drawable/ic_cart_white"
+                android:drawablePadding="8dp"
+                android:focusable="false"
+                android:gravity="center"
+                android:minHeight="0dp"
+                android:minWidth="0dp"
+                android:text="Thêm vào giỏ hàng"
+                android:textColor="#ffffff"
+                android:textAllCaps="false"/>
+        </FrameLayout>
+
     </LinearLayout>
 
     <LinearLayout
@@ -87,7 +88,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="3"
-            android:text="Subtotal"
+            android:text="Tổng cộng"
             android:textColor="#169955"
             android:textSize="24sp"
             android:textStyle="bold"/>

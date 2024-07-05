@@ -67,6 +67,7 @@ public class RandomResultActivity extends AppCompatActivity {
         cartItemAdapter.setIncListener(position -> updateSubtotal());
         cartItemAdapter.setDecListener(position -> updateSubtotal());
         cartItemAdapter.setQuantityListener(position -> updateSubtotal());
+        cartItemAdapter.setCloseListener(position -> updateSubtotal());
 
         rvDishes = findViewById(R.id.rvDishes);
         rvDishes.setLayoutManager(new LinearLayoutManager(this));
@@ -76,6 +77,8 @@ public class RandomResultActivity extends AppCompatActivity {
         updateSubtotal();
 
         btnAdd = findViewById(R.id.btnAdd);
+        btnAdd.setOnClickListener(v -> addToCart());
+
         btnRedo = findViewById(R.id.btnRedo);
         btnRedo.setOnClickListener(v-> getRandomDish());
     }
@@ -85,7 +88,20 @@ public class RandomResultActivity extends AppCompatActivity {
         for (CartItem item: items) {
             subtotal += item.getDish().getPrice() * item.getQuantity();
         }
+        if (subtotal == 0) {
+            setResult(RESULT_CANCELED);
+            finish();
+            return;
+        }
         tvSubtotalValue.setText(String.format(Locale.ENGLISH, "%.1fk", subtotal / 1000));
+    }
+
+    private void addToCart() {
+        Intent intent = new Intent();
+
+        intent.putExtra("cartItem", items.get(0));
+        setResult(RESULT_OK, intent);
+        finish();
     }
 
     private void getRandomDish() {

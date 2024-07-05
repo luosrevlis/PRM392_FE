@@ -1,8 +1,8 @@
 package com.example.prm392_fe.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -10,9 +10,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
-public class CartItem implements Serializable {
-    private int dishId;
-    private int quantity;
-    private Dish dish;
+public class Cart implements Serializable {
+    private ArrayList<CartItem> items;
+    private double subtotal;
 }
