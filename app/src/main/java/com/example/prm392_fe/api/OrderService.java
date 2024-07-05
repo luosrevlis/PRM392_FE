@@ -9,7 +9,7 @@ import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface OrderService {
-    String ORDER_ENDPOINT = "/api/orders";
+    String ORDER_ENDPOINT = "/orders";
 
     @GET(ORDER_ENDPOINT)
     Call<OrderSearchResponse> getOrderList(@Query("PageNumber") int pageNumber, @Query("PageSize") int pageSize);
