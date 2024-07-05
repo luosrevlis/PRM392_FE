@@ -24,6 +24,8 @@ import com.example.prm392_fe.model.CartItem;
 import com.example.prm392_fe.model.Dish;
 import com.example.prm392_fe.model.RandomDishResponse;
 
+import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Locale;
 
@@ -33,9 +35,10 @@ import retrofit2.Response;
 
 public class RandomResultActivity extends AppCompatActivity {
     ArrayList<CartItem> items;
-    double subtotal;
     CartItemAdapter cartItemAdapter;
     RecyclerView rvDishes;
+    DecimalFormat df;
+    double subtotal;
     TextView tvSubtotalValue;
     FrameLayout btnAdd;
     FrameLayout btnRedo;
@@ -73,6 +76,7 @@ public class RandomResultActivity extends AppCompatActivity {
         rvDishes.setLayoutManager(new LinearLayoutManager(this));
         rvDishes.setAdapter(cartItemAdapter);
 
+        df = new DecimalFormat("##,###.#k");
         tvSubtotalValue = findViewById(R.id.tvSubtotalValue);
         updateSubtotal();
 
@@ -93,7 +97,8 @@ public class RandomResultActivity extends AppCompatActivity {
             finish();
             return;
         }
-        tvSubtotalValue.setText(String.format(Locale.ENGLISH, "%.1fk", subtotal / 1000));
+
+        tvSubtotalValue.setText(df.format(subtotal / 1000));
     }
 
     private void addToCart() {

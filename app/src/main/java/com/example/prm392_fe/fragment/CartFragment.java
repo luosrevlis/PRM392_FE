@@ -16,6 +16,7 @@ import com.example.prm392_fe.adapter.CartItemAdapter;
 import com.example.prm392_fe.model.Cart;
 import com.example.prm392_fe.model.CartItem;
 
+import java.text.DecimalFormat;
 import java.util.Locale;
 
 /**
@@ -28,6 +29,7 @@ public class CartFragment extends Fragment {
     private Cart cart;
     CartItemAdapter cartItemAdapter;
     RecyclerView rvDishes;
+    DecimalFormat df;
     TextView tvSubtotalValue;
 
     public CartFragment() {
@@ -72,6 +74,7 @@ public class CartFragment extends Fragment {
         rvDishes.setLayoutManager(new LinearLayoutManager(getActivity()));
         rvDishes.setAdapter(cartItemAdapter);
 
+        df = new DecimalFormat("##,###.#k");
         tvSubtotalValue = rootview.findViewById(R.id.tvSubtotalValue);
         updateSubtotal();
 
@@ -84,6 +87,6 @@ public class CartFragment extends Fragment {
             subtotal += item.getDish().getPrice() * item.getQuantity();
         }
         cart.setSubtotal(subtotal);
-        tvSubtotalValue.setText(String.format(Locale.ENGLISH, "%.1fk", subtotal / 1000));
+        tvSubtotalValue.setText(df.format(subtotal / 1000));
     }
 }

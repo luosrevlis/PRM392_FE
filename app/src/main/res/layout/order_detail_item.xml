@@ -53,7 +53,6 @@
             android:layout_marginTop="10dp"
             android:layout_marginStart="10dp"
             android:text="Đơn giá: 20k"
-            android:textSize="16sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tvName" />
 
@@ -77,8 +76,6 @@
             android:layout_marginTop="10dp"
             android:layout_marginEnd="20dp"
             android:text="Số lượng: 3"
-            android:textSize="16sp"
-            android:textAlignment="center"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tvName" />
 

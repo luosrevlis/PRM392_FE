@@ -21,6 +21,7 @@ import com.example.prm392_fe.model.Dish;
 import com.example.prm392_fe.model.OrderDetail;
 import com.squareup.picasso.Picasso;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Locale;
 
@@ -32,10 +33,12 @@ import lombok.Setter;
 public class OrderDetailAdapter extends RecyclerView.Adapter<OrderDetailAdapter.OrderDetailViewHolder> {
     Context context;
     ArrayList<OrderDetail> items;
+    DecimalFormat df;
 
     public OrderDetailAdapter(Context context, ArrayList<OrderDetail> items) {
         this.context = context;
         this.items = items;
+        df = new DecimalFormat("##,###.#k");
     }
 
     @NonNull
@@ -55,18 +58,14 @@ public class OrderDetailAdapter extends RecyclerView.Adapter<OrderDetailAdapter.
                 .error(R.drawable.ic_error_red)
                 .into(holder.ivImage);
         holder.tvName.setText(item.getDishName());
-        holder.tvUnitPrice.setText(formatAmount(item.getPrice() / 1000));
-        holder.tvQuantity.setText("" + item.getQuantity());
-        holder.tvTotalPrice.setText(formatAmount(item.getPrice() * item.getQuantity() / 1000));
+        holder.tvUnitPrice.setText("Đơn giá: " + df.format(item.getPrice() / 1000));
+        holder.tvQuantity.setText("Số lượng: " + item.getQuantity());
+        holder.tvTotalPrice.setText("Thành tiền: " + df.format(item.getPrice() * item.getQuantity() / 1000));
     }
 
     @Override
     public int getItemCount() {
         return items.size();
-    }
-
-    private String formatAmount(double amount) {
-        return String.format(Locale.ENGLISH, "%.1fk", amount);
     }
 
     public class OrderDetailViewHolder extends RecyclerView.ViewHolder {
