@@ -29,7 +29,6 @@ import retrofit2.Response;
 
 public class SignUpTabFragment extends Fragment {
 
-
     EditText etEmail, etName, etAddress, etPassword, etConfirmPassword;
     Button btnSignUp;
     ImageView ivTogglePassword, ivToogleConfirmPassowrd;
@@ -94,10 +93,10 @@ public class SignUpTabFragment extends Fragment {
             public void onClick(View v) {
                 if (etConfirmPassword.getTransformationMethod() instanceof PasswordTransformationMethod) {
                     etConfirmPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
-                    ivTogglePassword.setImageResource(R.drawable.ic_eye);
+                    ivToogleConfirmPassowrd.setImageResource(R.drawable.ic_eye);
                 } else {
                     etConfirmPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
-                    ivTogglePassword.setImageResource(R.drawable.ic_eye_hidden);
+                    ivToogleConfirmPassowrd.setImageResource(R.drawable.ic_eye_hidden);
                 }
                 etConfirmPassword.setSelection(etConfirmPassword.getText().length());
             }
