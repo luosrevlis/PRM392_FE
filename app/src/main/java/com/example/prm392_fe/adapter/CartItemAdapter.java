@@ -20,6 +20,7 @@ import com.example.prm392_fe.model.CartItem;
 import com.example.prm392_fe.model.Dish;
 import com.squareup.picasso.Picasso;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Locale;
 
@@ -31,6 +32,7 @@ import lombok.Setter;
 public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.CartItemViewHolder> {
     Context context;
     ArrayList<CartItem> items;
+    DecimalFormat df;
     OnItemClickListener incListener;
     OnItemClickListener decListener;
     OnItemClickListener quantityListener;
@@ -39,6 +41,7 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.CartIt
     public CartItemAdapter(Context context, ArrayList<CartItem> items) {
         this.context = context;
         this.items = items;
+        df = new DecimalFormat("##,###.#k");
     }
 
     @NonNull
@@ -59,8 +62,8 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.CartIt
                 .error(R.drawable.ic_error_red)
                 .into(holder.ivImage);
         holder.tvName.setText(dish.getName());
-        holder.tvUnitPrice.setText(formatAmount(dish.getPrice() / 1000));
-        holder.tvTotalPrice.setText(formatAmount(dish.getPrice() * item.getQuantity() / 1000));
+        holder.tvUnitPrice.setText("Đơn giá: " + df.format(dish.getPrice() / 1000));
+        holder.tvTotalPrice.setText(df.format(dish.getPrice() * item.getQuantity() / 1000));
 
         holder.etQuantity.setText("" + item.getQuantity());
         holder.etQuantity.addTextChangedListener(new TextWatcher() {
@@ -84,7 +87,7 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.CartIt
                     holder.etQuantity.setText("99");
                 }
                 item.setQuantity(quantity);
-                holder.tvTotalPrice.setText(formatAmount(dish.getPrice() * item.getQuantity() / 1000));
+                holder.tvTotalPrice.setText(df.format(dish.getPrice() * item.getQuantity() / 1000));
                 quantityListener.onItemClick(holder.getAdapterPosition());
             }
         });
@@ -92,7 +95,7 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.CartIt
         holder.btnInc.setOnClickListener(v -> {
             item.setQuantity(item.getQuantity() + 1);
             holder.etQuantity.setText("" + item.getQuantity());
-            holder.tvTotalPrice.setText(formatAmount(dish.getPrice() * item.getQuantity() / 1000));
+            holder.tvTotalPrice.setText(df.format(dish.getPrice() * item.getQuantity() / 1000));
             incListener.onItemClick(holder.getAdapterPosition());
         });
 
@@ -102,7 +105,7 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.CartIt
             }
             item.setQuantity(item.getQuantity() - 1);
             holder.etQuantity.setText("" + item.getQuantity());
-            holder.tvTotalPrice.setText(formatAmount(dish.getPrice() * item.getQuantity() / 1000));
+            holder.tvTotalPrice.setText(df.format(dish.getPrice() * item.getQuantity() / 1000));
             decListener.onItemClick(holder.getAdapterPosition());
         });
 
@@ -116,10 +119,6 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.CartIt
     @Override
     public int getItemCount() {
         return items.size();
-    }
-
-    private String formatAmount(double amount) {
-        return String.format(Locale.ENGLISH, "%.1fk", amount);
     }
 
     public interface OnItemClickListener {
