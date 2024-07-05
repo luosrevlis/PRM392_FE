@@ -25,8 +25,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class SignUpTabFragment extends Fragment {
-
-
     EditText etEmail, etName, etAddress, etPassword, etConfirmPassword;
     Button btnSignUp;
     ViewPager viewPager;

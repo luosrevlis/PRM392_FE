@@ -20,6 +20,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.prm392_fe.R;
+import com.example.prm392_fe.activity.MainActivity;
 import com.example.prm392_fe.activity.RandomResultActivity;
 import com.example.prm392_fe.api.DishService;
 import com.example.prm392_fe.model.RandomDishResponse;
@@ -82,7 +83,7 @@ public class RandomFragment extends Fragment {
                 Intent intent = new Intent(getActivity(), RandomResultActivity.class);
                 intent.putExtra("randomDish", body.getResult());
                 intent.putExtra("meal", meal);
-                startActivity(intent);
+                getActivity().startActivityForResult(intent, MainActivity.REQUEST_CODE_RANDOM_DISH);
             }
 
             @Override
