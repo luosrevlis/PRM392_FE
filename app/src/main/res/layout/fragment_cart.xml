@@ -43,7 +43,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="3"
-            android:text="Subtotal"
+            android:text="Tổng cộng"
             android:textColor="#169955"
             android:textSize="24sp"
             android:textStyle="bold"/>
