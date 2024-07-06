@@ -47,7 +47,11 @@ public class MainActivity extends AppCompatActivity {
         cart = new Cart();
         cart.setItems(new ArrayList<>());
 
-        replaceFragment(new HomeFragment());
+        if (getIntent().getBooleanExtra("NAVIGATE_TO_SETTINGS", false)) {
+            replaceFragment(new SettingsFragment()); // Navigate to SettingsFragment
+        }else{
+            replaceFragment(new HomeFragment());
+        }
         binding.bottomNav.setOnItemSelectedListener(item -> {
             if (item.getItemId() == R.id.mHome) {
                 replaceFragment(new HomeFragment());
