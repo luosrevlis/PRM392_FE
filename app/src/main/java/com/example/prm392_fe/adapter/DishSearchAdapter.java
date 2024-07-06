@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.prm392_fe.R;
@@ -24,7 +25,7 @@ import lombok.Getter;
 public class DishSearchAdapter extends RecyclerView.Adapter<DishSearchAdapter.DishViewHolder> {
     private ArrayList<Dish> dishes;
     private Context context;
-
+    private OnAddToCartClickListener listener;
     @NonNull
     @Override
     public DishViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -42,6 +43,7 @@ public class DishSearchAdapter extends RecyclerView.Adapter<DishSearchAdapter.Di
         holder.getFoodName().setText(dishes.get(position).getName());
         String foodPrice = String.format(Locale.US, "%,.0f vnđ", dishes.get(position).getPrice());
         holder.getFoodPrice().setText(foodPrice);
+        holder.bind(dishes.get(position), listener, position);
     }
 
     @Override
@@ -56,15 +58,26 @@ public class DishSearchAdapter extends RecyclerView.Adapter<DishSearchAdapter.Di
         this.dishes.addAll(newDishes);
         notifyItemRangeInserted(dishes.size() - newDishes.size(), dishes.size()-1);
     }
+    public ArrayList<Dish> getItemList() {
+        return dishes;
+    }
     @Getter
     public class DishViewHolder extends RecyclerView.ViewHolder{
         private final ImageView foodImage;
         private final TextView foodName, foodPrice;
+        private final AppCompatImageButton btnSearchAddToCart;
         public DishViewHolder(@NonNull View itemView) {
             super(itemView);
             foodImage = itemView.findViewById(R.id.imageView);
             foodName = itemView.findViewById(R.id.tvFoodName);
             foodPrice = itemView.findViewById(R.id.tvFoodPrice);
+            btnSearchAddToCart = itemView.findViewById(R.id.btnSearchAddToCart);
         }
+        public void bind(Dish dish, OnAddToCartClickListener listener,int position){
+            btnSearchAddToCart.setOnClickListener(v->listener.onAddToCartClick(position));
+        }
+    }
+    public interface OnAddToCartClickListener{
+        void onAddToCartClick(int positition);
     }
 }

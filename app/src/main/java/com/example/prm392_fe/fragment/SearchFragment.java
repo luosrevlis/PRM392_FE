@@ -26,6 +26,8 @@ import android.widget.Toast;
 import com.example.prm392_fe.R;
 import com.example.prm392_fe.adapter.DishSearchAdapter;
 import com.example.prm392_fe.api.DishService;
+import com.example.prm392_fe.model.Cart;
+import com.example.prm392_fe.model.CartItem;
 import com.example.prm392_fe.model.Dish;
 import com.example.prm392_fe.model.PagedListDish;
 import com.example.prm392_fe.model.PagedListDishResponse;
@@ -46,9 +48,7 @@ public class SearchFragment extends Fragment {
     private AppCompatImageButton btnReturn, btnFilter, btnSearch;
     private EditText edFoodName;
     private RecyclerView searchList;
-
-    private ArrayList<Dish> dishes = new ArrayList<>();
-    private DishSearchAdapter dishSearchAdapter = new DishSearchAdapter(dishes,getContext());
+    private DishSearchAdapter dishSearchAdapter = new DishSearchAdapter(new ArrayList<>(),getContext(),this::onAddToCartClick);
 
     @Nullable
     private Integer meal;
@@ -61,14 +61,9 @@ public class SearchFragment extends Fragment {
     private int currentPage;
     private static final int pageSize = 5;
     private int totalPage;
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    /*private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";*/
 
-    // TODO: Rename and change types of parameters
-    /*private String mParam1;
-    private String mParam2;*/
+    private static final String ARG_CART = "cartObject";
+    private Cart cart;
 
     public SearchFragment() {
         // Required empty public constructor
@@ -78,16 +73,13 @@ public class SearchFragment extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * //@param param1 Parameter 1.
-     * //@param param2 Parameter 2.
+     * @param cart Parameter 1.
      * @return A new instance of fragment SearchFragment.
      */
-    // TODO: Rename and change types and number of parameters
-    public static SearchFragment newInstance(/*String param1, String param2*/) {
+    public static SearchFragment newInstance(Cart cart) {
         SearchFragment fragment = new SearchFragment();
         Bundle args = new Bundle();
-        /* args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2); */
+        args.putSerializable(ARG_CART,cart);
         fragment.setArguments(args);
         return fragment;
     }
@@ -95,10 +87,9 @@ public class SearchFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        /*if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }*/
+        if (getArguments() != null) {
+            cart = (Cart)getArguments().getSerializable(ARG_CART);
+        }
     }
 
     @Override
@@ -141,8 +132,6 @@ public class SearchFragment extends Fragment {
             }
             setSearchList(1);
         });
-
-
         return rootView;
     }
     private void setSearchList(int pageNumber){
@@ -221,5 +210,23 @@ public class SearchFragment extends Fragment {
         alertDialog.setCanceledOnTouchOutside(false);
         alertDialog.show();
     }
-
+    private void onAddToCartClick(int position){
+        Dish selectedDish = dishSearchAdapter.getItemList().get(position);
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle("Thêm vào giỏ hàng");
+        builder.setMessage("Bạn có muốn thêm 1 "+selectedDish.getName()+ " vào giỏ hàng?");
+        builder.setPositiveButton("Có", (dialog, which) -> {
+            CartItem cartItem = new CartItem(selectedDish.getDishID(), 1, selectedDish);
+            for (CartItem currentItem : cart.getItems()) {
+                if (currentItem.getDishId() == selectedDish.getDishID()){
+                    currentItem.setQuantity(currentItem.getQuantity()+1);
+                    Toast.makeText(getActivity(), "Đã thêm vào giỏ hàng", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+            }
+            cart.getItems().add(cartItem);
+            Toast.makeText(getActivity(), "Đã thêm vào giỏ hàng", Toast.LENGTH_SHORT).show();});
+        builder.setNegativeButton("Không", (dialog, which) -> dialog.dismiss());
+        builder.show();
+    }
 }

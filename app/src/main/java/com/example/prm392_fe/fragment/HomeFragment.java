@@ -2,6 +2,7 @@ package com.example.prm392_fe.fragment;
 
 import static com.example.prm392_fe.api.APIClient.getClient;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -15,6 +16,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,6 +25,8 @@ import com.example.prm392_fe.adapter.DishBannerAdapter;
 import com.example.prm392_fe.adapter.HorizontalMarginItemDecoration;
 import com.example.prm392_fe.api.DishService;
 import com.example.prm392_fe.api.UserService;
+import com.example.prm392_fe.model.Cart;
+import com.example.prm392_fe.model.CartItem;
 import com.example.prm392_fe.model.Dish;
 import com.example.prm392_fe.model.ListDishResponse;
 import com.example.prm392_fe.model.PagedListDishResponse;
@@ -42,53 +46,40 @@ import retrofit2.Response;
  * create an instance of this fragment.
  */
 public class HomeFragment extends Fragment {
+    private static final String ARG_CART = "cartObject";
+    private Cart cart;
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    //private static final String ARG_PARAM1 = "param1";
-    //private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    //private String mParam1;
-    //private String mParam2;
-
-    private ArrayList<Dish> newDishes = new ArrayList<>();
-    private ArrayList<Dish> suggestionDishes = new ArrayList<>();
+    //private ArrayList<Dish> newDishes = new ArrayList<>();
+    //private ArrayList<Dish> suggestionDishes = new ArrayList<>();
     private DishBannerAdapter newDishBannerAdapter;
     private DishBannerAdapter suggestionDishBannerAdapter;
     private TextView greetingText;
     private TextView suggestionText;
+    private ViewPager2 suggestionBanner;
 
     private AppCompatButton btnSearch;
-    public HomeFragment() {
-        // Required empty public constructor
-    }
+    public HomeFragment() {}
 
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * //@param param1 Parameter 1.
-     * //@param param2 Parameter 2.
+     * @param cart Parameter 1.
      * @return A new instance of fragment HomeFragment.
      */
-    // TODO: Rename and change types and number of parameters
-    public static HomeFragment newInstance(/*String param1, String param2*/) {
+    public static HomeFragment newInstance(Cart cart) {
         HomeFragment fragment = new HomeFragment();
-        /*Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);*/
+        Bundle args = new Bundle();
+        args.putSerializable(ARG_CART, cart);
+        fragment.setArguments(args);
         return fragment;
     }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        /*if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }*/
+        if (getArguments() != null) {
+            cart = (Cart)getArguments().getSerializable(ARG_CART);
+        }
     }
 
     @Override
@@ -101,19 +92,20 @@ public class HomeFragment extends Fragment {
         btnSearch.setOnClickListener(view -> {
             FragmentManager fragmentManager = getParentFragmentManager();
             fragmentManager.beginTransaction()
-                    .replace(R.id.clFragment, new SearchFragment())
+                    .replace(R.id.clFragment, SearchFragment.newInstance(cart))
                     .addToBackStack(null)
                     .commit();
         });
-        setGreetingMessage();
 
-        ViewPager2 suggestionBanner = rootView.findViewById(R.id.foodSuggestionBanner);
-        suggestionDishBannerAdapter = new DishBannerAdapter(suggestionDishes,getContext());
+        setGreetingMessage();
+        suggestionBanner = rootView.findViewById(R.id.foodSuggestionBanner);
+        suggestionDishBannerAdapter = new DishBannerAdapter(new ArrayList<>(),getContext(),this::onSuggestionAddToCartClick);
         suggestionBanner.setAdapter(suggestionDishBannerAdapter);
         suggestionBanner.setOffscreenPageLimit(1);
 
+
         ViewPager2 newFoodBanner = rootView.findViewById(R.id.foodNewBanner);
-        newDishBannerAdapter = new DishBannerAdapter(newDishes,getContext());
+        newDishBannerAdapter = new DishBannerAdapter(new ArrayList<>(),getContext(),this::onNewDishesAddToCartClick);
         newFoodBanner.setAdapter(newDishBannerAdapter);
         newFoodBanner.setOffscreenPageLimit(1);
 
@@ -164,8 +156,7 @@ public class HomeFragment extends Fragment {
                 Log.e("RandomFragment", "Response body is null");
                 return;
                 }
-                newDishes = body.getResult();
-                newDishBannerAdapter.updateItem(newDishes);
+                newDishBannerAdapter.updateItem(body.getResult());
             }
             @Override
             public void onFailure(Call<ListDishResponse> call, Throwable throwable) {
@@ -186,8 +177,7 @@ public class HomeFragment extends Fragment {
                     Log.e("RandomFragment", "Response body is null");
                     return;
                 }
-                suggestionDishes = body.getResult().getItems();
-                suggestionDishBannerAdapter.updateItem(suggestionDishes);
+                suggestionDishBannerAdapter.updateItem(body.getResult().getItems());
             }
             @Override
             public void onFailure(Call<PagedListDishResponse> call, Throwable throwable) {
@@ -228,5 +218,43 @@ public class HomeFragment extends Fragment {
                 Log.e("RandomFragment", "Random call failed", t);
             }
         });
+    }
+    private void onSuggestionAddToCartClick(int position){
+        Dish selectedDish = suggestionDishBannerAdapter.getItemList().get(position);
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle("Thêm vào giỏ hàng");
+        builder.setMessage("Bạn có muốn thêm 1 "+selectedDish.getName()+ " vào giỏ hàng?");
+        builder.setPositiveButton("Có", (dialog, which) -> {
+            CartItem cartItem = new CartItem(selectedDish.getDishID(), 1, selectedDish);
+            for (CartItem currentItem : cart.getItems()) {
+                if (currentItem.getDishId() == (selectedDish.getDishID())){
+                    currentItem.setQuantity(currentItem.getQuantity()+1);
+                    Toast.makeText(getActivity(), "Đã thêm vào giỏ hàng", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+            }
+            cart.getItems().add(cartItem);
+            Toast.makeText(getActivity(), "Đã thêm vào giỏ hàng", Toast.LENGTH_SHORT).show();});
+        builder.setNegativeButton("Không", (dialog, which) -> dialog.dismiss());
+        builder.show();
+    }
+    private void onNewDishesAddToCartClick(int position){
+        Dish selectedDish = newDishBannerAdapter.getItemList().get(position);
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle("Thêm vào giỏ hàng");
+        builder.setMessage("Bạn có muốn thêm 1 "+selectedDish.getName()+ " vào giỏ hàng?");
+        builder.setPositiveButton("Có", (dialog, which) -> {
+            CartItem cartItem = new CartItem(selectedDish.getDishID(), 1, selectedDish);
+            for (CartItem currentItem : cart.getItems()) {
+                if (currentItem.getDishId() == selectedDish.getDishID()){
+                    currentItem.setQuantity(currentItem.getQuantity()+1);
+                    Toast.makeText(getActivity(), "Đã thêm vào giỏ hàng", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+            }
+            cart.getItems().add(cartItem);
+            Toast.makeText(getActivity(), "Đã thêm vào giỏ hàng", Toast.LENGTH_SHORT).show();});
+        builder.setNegativeButton("Không", (dialog, which) -> dialog.dismiss());
+        builder.show();
     }
 }

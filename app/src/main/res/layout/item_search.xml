@@ -42,7 +42,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/tvFoodPrice"
             android:layout_alignParentEnd="true"
-            android:id="@+id/btnAddToCart"
+            android:id="@+id/btnSearchAddToCart"
             android:layout_marginTop="10dp"
             android:background="@drawable/rectangle_green_rounded_20dp"
             android:padding="15dp"
