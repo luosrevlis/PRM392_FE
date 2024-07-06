@@ -25,6 +25,8 @@ import com.example.prm392_fe.model.Dish;
 
 import java.util.ArrayList;
 
+import vn.zalopay.sdk.ZaloPaySDK;
+
 public class MainActivity extends AppCompatActivity {
     public static final int REQUEST_CODE_RANDOM_DISH = 1;
     ActivityMainBinding binding;
@@ -82,5 +84,10 @@ public class MainActivity extends AppCompatActivity {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.clFragment, fragment);
         fragmentTransaction.commit();
+    }
+    @Override
+    protected void onNewIntent(Intent intent){
+        super.onNewIntent(intent);
+        ZaloPaySDK.getInstance().onResult(intent);
     }
 }
