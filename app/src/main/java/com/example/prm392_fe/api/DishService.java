@@ -1,5 +1,9 @@
 package com.example.prm392_fe.api;
 
+import androidx.annotation.Nullable;
+
+import com.example.prm392_fe.model.ListDishResponse;
+import com.example.prm392_fe.model.PagedListDishResponse;
 import com.example.prm392_fe.model.RandomDishResponse;
 
 import retrofit2.Call;
@@ -13,4 +17,16 @@ public interface DishService {
 
     @GET(DISH_ENDPOINT + "/random")
     Call<RandomDishResponse> getRandomDish(@Query("meal") int meal);
+    @GET(DISH_ENDPOINT + "/dishes")
+    Call<PagedListDishResponse> getDishesByFilter(
+            @Query("Status")@Nullable Integer status,
+            @Query("Name")@Nullable String name,
+            @Query("MaxPrice")@Nullable Double maxPrice,
+            @Query("MinPrice")@Nullable Double minPrice,
+            @Query("Meal")@Nullable Integer meal,
+            @Query("PageNumber")@Nullable Integer pageNumber,
+            @Query("PageSize")@Nullable Integer pageSize);
+
+    @GET(DISH_ENDPOINT + "/home")
+    Call<ListDishResponse> getNewestDishes();
 }
