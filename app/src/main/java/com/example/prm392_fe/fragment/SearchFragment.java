@@ -120,8 +120,6 @@ public class SearchFragment extends Fragment {
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
                 LinearLayoutManager llm = (LinearLayoutManager) recyclerView.getLayoutManager();
-                Log.i("SearchFragment", "Current item: " + llm.findLastCompletelyVisibleItemPosition() + " Total item: " + dishSearchAdapter.getItemCount());
-                Log.i("SearchFragment","Current page:" +currentPage +" Total page "+totalPage);
                 if (llm != null && llm.findLastCompletelyVisibleItemPosition() >= dishSearchAdapter.getItemCount() - 2 && currentPage < totalPage) {
                     currentPage++;
                     setSearchList(currentPage);
@@ -162,8 +160,7 @@ public class SearchFragment extends Fragment {
                 PagedListDish pagedListDish = body.getResult();
                 currentPage = pagedListDish.getPageNumber();
                 totalPage = pagedListDish.getTotalPage();
-                Log.i("SearchFragment", "Current page: " + currentPage);
-                if (pagedListDish.getTotalPage()==1) {
+                if (pagedListDish.getPageNumber()==1) {
                     dishSearchAdapter.updateItemList(pagedListDish.getItems());
                 } else {
                     dishSearchAdapter.addNewDishes(pagedListDish.getItems());
