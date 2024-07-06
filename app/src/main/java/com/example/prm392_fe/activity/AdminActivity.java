@@ -5,6 +5,7 @@ package com.example.prm392_fe.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.AbsListView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -35,6 +36,7 @@ public class AdminActivity extends AppCompatActivity {
     private OrderService orderService;
     private int currentPage = 1;
     private final int pageSize = 10;
+    private boolean isLoading = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,17 +54,33 @@ public class AdminActivity extends AppCompatActivity {
         fetchOrders(currentPage, pageSize);
 
         btnLogout.setOnClickListener(v -> logOut());
+
+        lvOrder.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                if (firstVisibleItem + visibleItemCount >= totalItemCount && !isLoading) {
+                    currentPage++;
+                    fetchOrders(currentPage, pageSize);
+                }
+            }
+        });
     }
 
     private void fetchOrders(int page, int size) {
+        isLoading = true;
         Call<OrderSearchResponse> call = orderService.getOrderList(page, size);
         call.enqueue(new Callback<OrderSearchResponse>() {
             @Override
             public void onResponse(Call<OrderSearchResponse> call, Response<OrderSearchResponse> response) {
+                isLoading = false;
                 if (response.isSuccessful() && response.body() != null) {
                     OrderSearchResponse orderResponse = response.body();
                     if (orderResponse.getStatusCode() == 200) {
-                        updateOrderList(orderResponse.getResult().getItems()); // Update with direct array of orders
+                        addOrdersToList(orderResponse.getResult().getItems()); // Append new data
                     } else {
                         Toast.makeText(AdminActivity.this, orderResponse.getMessage(), Toast.LENGTH_SHORT).show();
                     }
@@ -73,22 +91,16 @@ public class AdminActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<OrderSearchResponse> call, Throwable throwable) {
+                isLoading = false;
                 Toast.makeText(AdminActivity.this, "Failed to load orders", Toast.LENGTH_SHORT).show();
                 Log.e(TAG, "Error loading orders", throwable);
             }
         });
     }
 
-    private void updateOrderList(Order[] orders) {
-        listOrder.clear();
+    private void addOrdersToList(Order[] orders) {
         listOrder.addAll(Arrays.asList(orders));
-
-        if (orderAdapter != null) {
-            orderAdapter.notifyDataSetChanged();
-        } else {
-            orderAdapter = new OrderAdapter(this, listOrder);
-            lvOrder.setAdapter(orderAdapter);
-        }
+        orderAdapter.notifyDataSetChanged();
     }
 
     private void logOut(){
