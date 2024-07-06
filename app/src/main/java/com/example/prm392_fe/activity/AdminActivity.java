@@ -2,8 +2,10 @@ package com.example.prm392_fe.activity;
 
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -28,6 +30,7 @@ public class AdminActivity extends AppCompatActivity {
     private static final String TAG = "AdminActivity";
     ListView lvOrder;
     OrderAdapter orderAdapter;
+    Button btnLogout;
     ArrayList<Order> listOrder;
     private OrderService orderService;
     private int currentPage = 1;
@@ -38,6 +41,8 @@ public class AdminActivity extends AppCompatActivity {
         setContentView(R.layout.activity_admin);
 
         lvOrder = findViewById(R.id.lvOrder);
+        btnLogout = findViewById(R.id.btnLogout);
+
         listOrder = new ArrayList<>();
         orderAdapter = new OrderAdapter(this, listOrder);
         lvOrder.setAdapter(orderAdapter);
@@ -45,6 +50,8 @@ public class AdminActivity extends AppCompatActivity {
         orderService = APIClient.getClient(this).create(OrderService.class);
 
         fetchOrders(currentPage, pageSize);
+
+        btnLogout.setOnClickListener(v -> logOut());
     }
 
     private void fetchOrders(int page, int size) {
@@ -82,5 +89,11 @@ public class AdminActivity extends AppCompatActivity {
             orderAdapter = new OrderAdapter(this, listOrder);
             lvOrder.setAdapter(orderAdapter);
         }
+    }
+
+    private void logOut(){
+        Intent intent = new Intent(this,LoginActivity.class);
+        startActivity(intent);
+        finish();
     }
 }
