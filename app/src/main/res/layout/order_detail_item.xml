@@ -33,16 +33,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent">
 
-        <ImageView
-            android:id="@+id/ivClose"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_marginTop="4dp"
-            android:layout_marginEnd="4dp"
-            android:src="@drawable/ic_close_red"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
-
         <TextView
             android:id="@+id/tvName"
             android:layout_width="0dp"
@@ -50,10 +40,10 @@
             android:layout_marginStart="10dp"
             android:text="Product Name"
             android:textColor="#169955"
-            android:textSize="20sp"
+            android:textSize="24sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/ivClose"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
@@ -72,44 +62,22 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:layout_marginStart="10dp"
-            android:text="40k"
+            android:text="Thành tiền: 60k"
             android:textColor="#169955"
-            android:textSize="24sp"
+            android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tvUnitPrice" />
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btnInc"
-            android:layout_width="40dp"
+        <TextView
+            android:id="@+id/tvQuantity"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="#00000000"
-            android:text="+"
-            android:textSize="36sp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="20dp"
+            android:text="Số lượng: 3"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
-
-        <EditText
-            android:id="@+id/etQuantity"
-            android:layout_width="50dp"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="number"
-            android:text="2"
-            android:textAlignment="center"
-            app:layout_constraintEnd_toStartOf="@id/btnInc"
-            app:layout_constraintBottom_toBottomOf="parent" />
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btnDec"
-            android:layout_width="40dp"
-            android:layout_height="wrap_content"
-            android:background="#00000000"
-            android:text="-"
-            android:textSize="36sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toStartOf="@id/etQuantity"
-            app:layout_constraintBottom_toBottomOf="parent" />
+            app:layout_constraintTop_toBottomOf="@id/tvName" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

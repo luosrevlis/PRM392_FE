@@ -11,8 +11,10 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class CartItem implements Serializable {
-    private int dishId;
-    private int quantity;
-    private Dish dish;
+public class UserInfo implements Serializable {
+    private int accountID;
+    private String fullName;
+    private String email;
+    private String address;
+
 }

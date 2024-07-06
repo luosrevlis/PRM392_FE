@@ -1,8 +1,10 @@
 package com.example.prm392_fe.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -17,10 +19,16 @@ import com.example.prm392_fe.fragment.CartFragment;
 import com.example.prm392_fe.fragment.HomeFragment;
 import com.example.prm392_fe.fragment.RandomFragment;
 import com.example.prm392_fe.fragment.SettingsFragment;
+import com.example.prm392_fe.model.Cart;
+import com.example.prm392_fe.model.CartItem;
+import com.example.prm392_fe.model.Dish;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
-
+    public static final int REQUEST_CODE_RANDOM_DISH = 1;
     ActivityMainBinding binding;
+    Cart cart;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,19 +43,38 @@ public class MainActivity extends AppCompatActivity {
         });
         binding.bottomNav.setOnApplyWindowInsetsListener(null);
         binding.bottomNav.setPadding(0, 0, 0, 0);
-        replaceFragment(new HomeFragment());
+
+        cart = new Cart();
+        cart.setItems(new ArrayList<>());
+
+        if (getIntent().getBooleanExtra("NAVIGATE_TO_SETTINGS", false)) {
+            replaceFragment(new SettingsFragment()); // Navigate to SettingsFragment
+        }else{
+            replaceFragment(new HomeFragment());
+        }
         binding.bottomNav.setOnItemSelectedListener(item -> {
             if (item.getItemId() == R.id.mHome) {
                 replaceFragment(new HomeFragment());
             } else if (item.getItemId() == R.id.mRandom) {
                 replaceFragment(new RandomFragment());
             } else if (item.getItemId() == R.id.mCart) {
-                replaceFragment(new CartFragment());
+                replaceFragment(CartFragment.newInstance(cart));
             } else if (item.getItemId() == R.id.mSettings) {
                 replaceFragment(new SettingsFragment());
             }
             return true;
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CODE_RANDOM_DISH && resultCode == RESULT_OK && data != null) {
+            // TODO check item exists
+            cart.getItems().add((CartItem) data.getSerializableExtra("cartItem"));
+            replaceFragment(CartFragment.newInstance(cart));
+            binding.bottomNav.setSelectedItemId(R.id.mCart);
+        }
     }
 
     private void replaceFragment(Fragment fragment) {
