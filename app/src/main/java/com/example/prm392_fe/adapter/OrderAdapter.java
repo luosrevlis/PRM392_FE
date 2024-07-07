@@ -1,24 +1,40 @@
 package com.example.prm392_fe.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import androidx.appcompat.widget.AppCompatButton;
+
 import com.example.prm392_fe.R;
+import com.example.prm392_fe.activity.OrderDetailActivity;
 import com.example.prm392_fe.model.Order;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+
+import lombok.Setter;
 
 public class OrderAdapter extends BaseAdapter {
     private Context context;
     private ArrayList<Order> orders;
+    @Setter private OnItemClickListener onDetailClickListener;
+    @Setter private OnItemClickListener onDoneClickListener;
 
     public OrderAdapter(Context context, ArrayList<Order> orders) {
         this.context = context;
         this.orders = orders;
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick(int orderId);
     }
 
     @Override
@@ -45,6 +61,8 @@ public class OrderAdapter extends BaseAdapter {
             holder.tvOrderId = convertView.findViewById(R.id.tvOrderId);
             holder.tvBookingDate = convertView.findViewById(R.id.tvBookingDate);
             holder.tvBookingPrice = convertView.findViewById(R.id.tvBookingPrice);
+            holder.btnDetail = convertView.findViewById(R.id.btnDetail);
+            holder.btnDone = convertView.findViewById(R.id.btnDone);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
@@ -53,8 +71,33 @@ public class OrderAdapter extends BaseAdapter {
         Order order = orders.get(position);
 
         holder.tvOrderId.setText(String.valueOf(order.getOrderID()));
-        holder.tvBookingDate.setText(order.getBookingTime());
+        String originalFormat = "yyyy-MM-dd'T'HH:mm:ss"; // Adjust this format according to the actual format of your bookingTime
+        String targetFormat = "dd/MM/yyyy HH:mm";
+
+        SimpleDateFormat originalDateFormat = new SimpleDateFormat(originalFormat);
+        SimpleDateFormat targetDateFormat = new SimpleDateFormat(targetFormat);
+
+        try {
+            Date date = originalDateFormat.parse(order.getBookingTime());
+            // Add 7 hours to the date
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(date);
+            calendar.add(Calendar.HOUR_OF_DAY, 7);
+            Date newDate = calendar.getTime();
+
+            String formattedDate = targetDateFormat.format(newDate);
+            holder.tvBookingDate.setText(formattedDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            // Handle the error
+        }
         holder.tvBookingPrice.setText(String.valueOf(order.getBookingPrice()));
+        holder.btnDetail.setOnClickListener(v -> {
+            onDetailClickListener.onItemClick(order.getOrderID());
+        });
+        holder.btnDone.setOnClickListener(v -> {
+            onDoneClickListener.onItemClick(order.getOrderID());
+        });
 
         return convertView;
     }
@@ -63,5 +106,7 @@ public class OrderAdapter extends BaseAdapter {
         TextView tvOrderId;
         TextView tvBookingDate;
         TextView tvBookingPrice;
+        AppCompatButton btnDetail;
+        AppCompatButton btnDone;
     }
 }

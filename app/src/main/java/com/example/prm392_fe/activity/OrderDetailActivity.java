@@ -21,13 +21,18 @@ import com.example.prm392_fe.adapter.OrderDetailAdapter;
 import com.example.prm392_fe.api.DishService;
 import com.example.prm392_fe.api.OrderService;
 import com.example.prm392_fe.databinding.ActivityOrderDetailBinding;
+import com.example.prm392_fe.model.EmptyResponse;
 import com.example.prm392_fe.model.Order;
 import com.example.prm392_fe.model.OrderDetail;
 import com.example.prm392_fe.model.OrderDetailResponse;
 
 import java.text.DecimalFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
 import retrofit2.Call;
@@ -56,7 +61,11 @@ public class OrderDetailActivity extends AppCompatActivity {
     }
 
     private void getOrderDetail() {
-        int orderID = getIntent().getIntExtra("orderID", 15);
+        int orderID = getIntent().getIntExtra("orderID", -1);
+        if (orderID < 0) {
+            finish();
+            return;
+        }
         Call<OrderDetailResponse> call = orderService.getOrderDetail(orderID);
         call.enqueue(new Callback<OrderDetailResponse>() {
             @Override
@@ -81,15 +90,63 @@ public class OrderDetailActivity extends AppCompatActivity {
     private void bindViewComponents(Order order) {
         binding.tvCustomerName.setText(order.getAccount().getFullName());
         binding.tvCustomerAddress.setText(order.getAccount().getAddress());
-        String orderDate = order.getBookingTime().substring(0, 10);
-        String orderTime = order.getBookingTime().substring(11, 19);
-        binding.tvDatetime.setText(orderDate + " " + orderTime);
+//        String orderDate = order.getBookingTime().substring(0, 10);
+//        String orderTime = order.getBookingTime().substring(11, 19);
+//        binding.tvDatetime.setText(orderDate + " " + orderTime);
+
+        String originalFormat = "yyyy-MM-dd'T'HH:mm:ss"; // Adjust this format according to the actual format of your bookingTime
+        String targetFormat = "dd/MM/yyyy HH:mm";
+
+        SimpleDateFormat originalDateFormat = new SimpleDateFormat(originalFormat);
+        SimpleDateFormat targetDateFormat = new SimpleDateFormat(targetFormat);
+
+        try {
+            Date date = originalDateFormat.parse(order.getBookingTime());
+            // Add 7 hours to the date
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(date);
+            calendar.add(Calendar.HOUR_OF_DAY, 7);
+            Date newDate = calendar.getTime();
+
+            String formattedDate = targetDateFormat.format(newDate);
+            binding.tvDatetime.setText(formattedDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            // Handle the error
+        }
         DecimalFormat df = new DecimalFormat("##,###.#k");
         binding.tvSubtotal.setText("Tổng cộng: " + df.format(order.getBookingPrice() / 1000));
         adapter = new OrderDetailAdapter(this, new ArrayList<>(Arrays.asList(order.getOrderDetails())));
         binding.rvDishes.setLayoutManager(new LinearLayoutManager(this));
         binding.rvDishes.setAdapter(adapter);
-        binding.btnReturn.setOnClickListener(v -> finish());
-        binding.btnDone.setOnClickListener(v -> Toast.makeText(this, "In development", Toast.LENGTH_SHORT).show());
+        binding.btnReturn.setOnClickListener(v -> {
+            setResult(RESULT_CANCELED);
+            finish();
+        });
+        binding.btnDone.setOnClickListener(v -> {
+            updateOrderStatus(order.getOrderID());
+            setResult(RESULT_OK);
+            finish();
+        });
+    }
+
+    private void updateOrderStatus(int orderId) {
+        Call<EmptyResponse> call = orderService.updateOrderStatus(orderId);
+        call.enqueue(new Callback<EmptyResponse>() {
+            @Override
+            public void onResponse(Call<EmptyResponse> call, Response<EmptyResponse> response) {
+                if (!response.isSuccessful()) {
+                    Toast.makeText(OrderDetailActivity.this, "Cập nhật tình trạng đơn hàng thất bại. Hãy thử lại sau.", Toast.LENGTH_SHORT).show();
+                    Log.e("OrderDetailActivity", "Response unsuccessful.");
+                }
+                Toast.makeText(OrderDetailActivity.this, "Cập nhật tình trạng đơn hàng thành công.", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(Call<EmptyResponse> call, Throwable throwable) {
+                Toast.makeText(OrderDetailActivity.this, "Lỗi kết nối. Hãy thử lại sau.", Toast.LENGTH_SHORT).show();
+                Log.e("OrderDetailActivity", "Order status update call failed", throwable);
+            }
+        });
     }
 }

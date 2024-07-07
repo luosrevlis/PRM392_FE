@@ -78,13 +78,13 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.CartIt
                     return;
                 }
                 int quantity = Integer.parseInt(s.toString());
-                if (quantity < 0) {
-                    quantity = 0;
-                    holder.etQuantity.setText("0");
+                if (quantity < 1) {
+                    quantity = 1;
+                    holder.etQuantity.setText("1");
                 }
-                if (quantity > 99) {
-                    quantity = 99;
-                    holder.etQuantity.setText("99");
+                if (quantity > 50) {
+                    quantity = 50;
+                    holder.etQuantity.setText("50");
                 }
                 item.setQuantity(quantity);
                 holder.tvTotalPrice.setText(df.format(dish.getPrice() * item.getQuantity() / 1000));
@@ -93,6 +93,9 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.CartIt
         });
 
         holder.btnInc.setOnClickListener(v -> {
+            if (item.getQuantity() >= 50) {
+                return;
+            }
             item.setQuantity(item.getQuantity() + 1);
             holder.etQuantity.setText("" + item.getQuantity());
             holder.tvTotalPrice.setText(df.format(dish.getPrice() * item.getQuantity() / 1000));
@@ -100,7 +103,7 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.CartIt
         });
 
         holder.btnDec.setOnClickListener(v -> {
-            if (item.getQuantity() <= 0) {
+            if (item.getQuantity() <= 1) {
                 return;
             }
             item.setQuantity(item.getQuantity() - 1);

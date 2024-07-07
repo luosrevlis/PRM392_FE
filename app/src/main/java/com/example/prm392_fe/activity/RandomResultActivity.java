@@ -64,7 +64,7 @@ public class RandomResultActivity extends AppCompatActivity {
         }
 
         items = new ArrayList<>();
-        items.add(new CartItem(dish.getDishId(), 1, dish));
+        items.add(new CartItem(dish.getDishID(), 1, dish));
 
         cartItemAdapter = new CartItemAdapter(this, items);
         cartItemAdapter.setIncListener(position -> updateSubtotal());
@@ -124,7 +124,7 @@ public class RandomResultActivity extends AppCompatActivity {
                 Dish dish = body.getResult();
 
                 items = new ArrayList<>();
-                items.add(new CartItem(dish.getDishId(), 1, dish));
+                items.add(new CartItem(dish.getDishID(), 1, dish));
 
                 cartItemAdapter = new CartItemAdapter(RandomResultActivity.this, items);
                 cartItemAdapter.setIncListener(position -> updateSubtotal());
