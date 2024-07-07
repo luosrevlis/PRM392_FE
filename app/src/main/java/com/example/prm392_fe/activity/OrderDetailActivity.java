@@ -27,8 +27,12 @@ import com.example.prm392_fe.model.OrderDetail;
 import com.example.prm392_fe.model.OrderDetailResponse;
 
 import java.text.DecimalFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
 import retrofit2.Call;
@@ -86,9 +90,30 @@ public class OrderDetailActivity extends AppCompatActivity {
     private void bindViewComponents(Order order) {
         binding.tvCustomerName.setText(order.getAccount().getFullName());
         binding.tvCustomerAddress.setText(order.getAccount().getAddress());
-        String orderDate = order.getBookingTime().substring(0, 10);
-        String orderTime = order.getBookingTime().substring(11, 19);
-        binding.tvDatetime.setText(orderDate + " " + orderTime);
+//        String orderDate = order.getBookingTime().substring(0, 10);
+//        String orderTime = order.getBookingTime().substring(11, 19);
+//        binding.tvDatetime.setText(orderDate + " " + orderTime);
+
+        String originalFormat = "yyyy-MM-dd'T'HH:mm:ss"; // Adjust this format according to the actual format of your bookingTime
+        String targetFormat = "dd/MM/yyyy HH:mm";
+
+        SimpleDateFormat originalDateFormat = new SimpleDateFormat(originalFormat);
+        SimpleDateFormat targetDateFormat = new SimpleDateFormat(targetFormat);
+
+        try {
+            Date date = originalDateFormat.parse(order.getBookingTime());
+            // Add 7 hours to the date
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(date);
+            calendar.add(Calendar.HOUR_OF_DAY, 7);
+            Date newDate = calendar.getTime();
+
+            String formattedDate = targetDateFormat.format(newDate);
+            binding.tvDatetime.setText(formattedDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            // Handle the error
+        }
         DecimalFormat df = new DecimalFormat("##,###.#k");
         binding.tvSubtotal.setText("Tổng cộng: " + df.format(order.getBookingPrice() / 1000));
         adapter = new OrderDetailAdapter(this, new ArrayList<>(Arrays.asList(order.getOrderDetails())));

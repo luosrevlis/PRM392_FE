@@ -37,7 +37,7 @@ public class AdminActivity extends AppCompatActivity {
     ArrayList<Order> listOrder;
     private OrderService orderService;
     private int currentPage = 1;
-    private final int pageSize = 10;
+    private final int pageSize = 2;
     private boolean isLoading = false;
 
     @Override
@@ -93,7 +93,7 @@ public class AdminActivity extends AppCompatActivity {
                 if (response.isSuccessful() && response.body() != null) {
                     OrderSearchResponse orderResponse = response.body();
                     if (orderResponse.getStatusCode() == 200) {
-                        listOrder.clear(); // clear old data
+//                        listOrder.clear(); // clear old data
                         addOrdersToList(orderResponse.getResult().getItems()); // Append new data
                     } else {
                         Toast.makeText(AdminActivity.this, orderResponse.getMessage(), Toast.LENGTH_SHORT).show();

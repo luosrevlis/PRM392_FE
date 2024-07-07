@@ -14,7 +14,11 @@ import com.example.prm392_fe.R;
 import com.example.prm392_fe.activity.OrderDetailActivity;
 import com.example.prm392_fe.model.Order;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 import lombok.Setter;
 
@@ -67,7 +71,26 @@ public class OrderAdapter extends BaseAdapter {
         Order order = orders.get(position);
 
         holder.tvOrderId.setText(String.valueOf(order.getOrderID()));
-        holder.tvBookingDate.setText(order.getBookingTime());
+        String originalFormat = "yyyy-MM-dd'T'HH:mm:ss"; // Adjust this format according to the actual format of your bookingTime
+        String targetFormat = "dd/MM/yyyy HH:mm";
+
+        SimpleDateFormat originalDateFormat = new SimpleDateFormat(originalFormat);
+        SimpleDateFormat targetDateFormat = new SimpleDateFormat(targetFormat);
+
+        try {
+            Date date = originalDateFormat.parse(order.getBookingTime());
+            // Add 7 hours to the date
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(date);
+            calendar.add(Calendar.HOUR_OF_DAY, 7);
+            Date newDate = calendar.getTime();
+
+            String formattedDate = targetDateFormat.format(newDate);
+            holder.tvBookingDate.setText(formattedDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            // Handle the error
+        }
         holder.tvBookingPrice.setText(String.valueOf(order.getBookingPrice()));
         holder.btnDetail.setOnClickListener(v -> {
             onDetailClickListener.onItemClick(order.getOrderID());
