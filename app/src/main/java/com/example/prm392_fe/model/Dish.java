@@ -12,7 +12,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Dish implements Serializable {
-    private int dishId;
+    private int dishID;
     private String name;
     private double price;
     private String imageUrl;

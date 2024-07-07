@@ -52,11 +52,11 @@ public class MainActivity extends AppCompatActivity {
         if (getIntent().getBooleanExtra("NAVIGATE_TO_SETTINGS", false)) {
             replaceFragment(new SettingsFragment()); // Navigate to SettingsFragment
         }else{
-            replaceFragment(new HomeFragment());
+            replaceFragment(HomeFragment.newInstance(cart));
         }
         binding.bottomNav.setOnItemSelectedListener(item -> {
             if (item.getItemId() == R.id.mHome) {
-                replaceFragment(new HomeFragment());
+                replaceFragment(HomeFragment.newInstance(cart));
             } else if (item.getItemId() == R.id.mRandom) {
                 replaceFragment(new RandomFragment());
             } else if (item.getItemId() == R.id.mCart) {
