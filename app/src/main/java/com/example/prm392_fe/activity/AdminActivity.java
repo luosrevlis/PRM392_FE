@@ -5,18 +5,22 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.AbsListView;
 import android.widget.Button;
-import android.widget.ListView;
 import android.widget.Toast;
 
+import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.prm392_fe.R;
 import com.example.prm392_fe.adapter.OrderAdapter;
 import com.example.prm392_fe.api.APIClient;
 import com.example.prm392_fe.api.OrderService;
-import com.example.prm392_fe.fragment.CartFragment;
-import com.example.prm392_fe.model.CartItem;
 import com.example.prm392_fe.model.EmptyResponse;
 import com.example.prm392_fe.model.Order;
 import com.example.prm392_fe.model.OrderSearchResponse;
@@ -31,43 +35,58 @@ import retrofit2.Response;
 public class AdminActivity extends AppCompatActivity {
     public static final int REQUEST_CODE_ORDER_DETAIL = 1;
     private static final String TAG = "AdminActivity";
-    ListView lvOrder;
+    RecyclerView rvOrder;
+    LinearLayoutManager linearLayoutManager;
     OrderAdapter orderAdapter;
     Button btnLogout;
     ArrayList<Order> listOrder;
     private OrderService orderService;
     private int currentPage = 1;
-    private final int pageSize = 2;
+    private final int pageSize = 4;
     private boolean isLoading = false;
+    private boolean isEndOfList = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_admin);
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            return insets;
+        });
 
-        lvOrder = findViewById(R.id.lvOrder);
+        rvOrder = findViewById(R.id.rvOrder);
         btnLogout = findViewById(R.id.btnLogout);
 
         orderService = APIClient.getClient(this).create(OrderService.class);
 
         listOrder = new ArrayList<>();
-        orderAdapter = new OrderAdapter(this, listOrder);
+        orderAdapter = new OrderAdapter(this, listOrder, true);
         orderAdapter.setOnDoneClickListener(this::updateOrderStatus);
         orderAdapter.setOnDetailClickListener(this::navigateToOrderDetailPage);
-        lvOrder.setAdapter(orderAdapter);
+        linearLayoutManager = new LinearLayoutManager(this);
+        rvOrder.setLayoutManager(linearLayoutManager);
+        rvOrder.setAdapter(orderAdapter);
 
         fetchOrders(currentPage, pageSize);
 
         btnLogout.setOnClickListener(v -> logOut());
 
-        lvOrder.setOnScrollListener(new AbsListView.OnScrollListener() {
+        rvOrder.setOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
-            public void onScrollStateChanged(AbsListView view, int scrollState) {
-            }
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if (dy == 0 || isEndOfList || isLoading) {
+                    return;
+                }
 
-            @Override
-            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-                if (firstVisibleItem + visibleItemCount >= totalItemCount && !isLoading) {
+                int visibleItemCount = linearLayoutManager.getChildCount();
+                int totalItemCount = linearLayoutManager.getItemCount();
+                int pastVisibleItems = linearLayoutManager.findFirstVisibleItemPosition();
+
+                if (visibleItemCount + pastVisibleItems >= totalItemCount) {
                     currentPage++;
                     fetchOrders(currentPage, pageSize);
                 }
@@ -79,6 +98,9 @@ public class AdminActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CODE_ORDER_DETAIL && resultCode == RESULT_OK) {
+            listOrder.clear();
+            currentPage = 1;
+            isEndOfList = false;
             fetchOrders(currentPage, pageSize);
         }
     }
@@ -92,8 +114,11 @@ public class AdminActivity extends AppCompatActivity {
                 isLoading = false;
                 if (response.isSuccessful() && response.body() != null) {
                     OrderSearchResponse orderResponse = response.body();
+                    if (orderResponse.getResult().getItems().length == 0) {
+                        isEndOfList = true;
+                        return;
+                    }
                     if (orderResponse.getStatusCode() == 200) {
-//                        listOrder.clear(); // clear old data
                         addOrdersToList(orderResponse.getResult().getItems()); // Append new data
                     } else {
                         Toast.makeText(AdminActivity.this, orderResponse.getMessage(), Toast.LENGTH_SHORT).show();
@@ -114,7 +139,7 @@ public class AdminActivity extends AppCompatActivity {
 
     private void addOrdersToList(Order[] orders) {
         listOrder.addAll(Arrays.asList(orders));
-        orderAdapter.notifyDataSetChanged();
+        orderAdapter.setItems(listOrder);
     }
 
     private void navigateToOrderDetailPage(int orderId) {

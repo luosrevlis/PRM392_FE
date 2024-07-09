@@ -4,8 +4,6 @@ import static com.example.prm392_fe.api.APIClient.getClient;
 
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.FrameLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -14,16 +12,13 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.prm392_fe.R;
 import com.example.prm392_fe.adapter.OrderDetailAdapter;
-import com.example.prm392_fe.api.DishService;
 import com.example.prm392_fe.api.OrderService;
-import com.example.prm392_fe.databinding.ActivityOrderDetailBinding;
+import com.example.prm392_fe.databinding.ActivityOrderDetailAdminBinding;
 import com.example.prm392_fe.model.EmptyResponse;
 import com.example.prm392_fe.model.Order;
-import com.example.prm392_fe.model.OrderDetail;
 import com.example.prm392_fe.model.OrderDetailResponse;
 
 import java.text.DecimalFormat;
@@ -33,14 +28,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Locale;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class OrderDetailActivity extends AppCompatActivity {
-    ActivityOrderDetailBinding binding;
+    ActivityOrderDetailAdminBinding binding;
     OrderService orderService;
     OrderDetailAdapter adapter;
 
@@ -48,7 +42,7 @@ public class OrderDetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        binding = ActivityOrderDetailBinding.inflate(getLayoutInflater());
+        binding = ActivityOrderDetailAdminBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -114,6 +108,7 @@ public class OrderDetailActivity extends AppCompatActivity {
             e.printStackTrace();
             // Handle the error
         }
+
         DecimalFormat df = new DecimalFormat("##,###.#k");
         binding.tvSubtotal.setText("Tổng cộng: " + df.format(order.getBookingPrice() / 1000));
         adapter = new OrderDetailAdapter(this, new ArrayList<>(Arrays.asList(order.getOrderDetails())));
