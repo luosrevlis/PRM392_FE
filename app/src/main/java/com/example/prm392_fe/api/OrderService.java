@@ -4,8 +4,8 @@ import com.example.prm392_fe.model.CreateOrderRequest;
 import com.example.prm392_fe.model.CreateOrderResponse;
 import com.example.prm392_fe.model.EmptyResponse;
 import com.example.prm392_fe.model.OrderDetailResponse;
+import com.example.prm392_fe.model.OrderHistoryResponse;
 import com.example.prm392_fe.model.OrderSearchResponse;
-import com.example.prm392_fe.model.Response;
 import com.example.prm392_fe.model.UpdateTransactionRequest;
 
 import retrofit2.Call;
@@ -33,4 +33,7 @@ public interface OrderService {
 
     @PUT(ORDER_ENDPOINT + "/{orderId}")
     Call<EmptyResponse> updateOrderStatus(@Path("orderId") int orderId);
+
+    @GET(ORDER_ENDPOINT + "/current")
+    Call<OrderHistoryResponse> getOrderHistory();
 }
