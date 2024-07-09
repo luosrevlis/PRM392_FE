@@ -5,7 +5,6 @@
     android:layout_height="match_parent"
     tools:context=".fragment.SettingsFragment">
 
-    <!-- TODO: Update blank fragment layout -->
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -68,6 +67,44 @@
                     android:padding="2dp"
                     android:textStyle="bold"
                     android:layout_toEndOf="@+id/icon_setting" />
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/ic_chevron_right"
+                    android:scaleX="2"
+                    android:scaleY="2"
+                    android:layout_alignParentEnd="true"  />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/history"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_weight="10"
+                android:paddingHorizontal="20dp"
+                android:paddingVertical="15dp"
+                android:baselineAligned="true"
+                android:background="@drawable/ic_underline"
+                android:clickable="true">
+
+                <ImageView
+                    android:id="@+id/icon_setting5"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/ic_history"
+                    android:layout_marginHorizontal="10dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Lịch sử mua hàng"
+                    android:textSize="16sp"
+                    android:padding="2dp"
+                    android:textStyle="bold"
+                    android:layout_toEndOf="@+id/icon_setting5" />
 
                 <ImageView
                     android:layout_width="20dp"

@@ -5,19 +5,26 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.AdminOrderDetailActivity">
+    tools:context=".activity.OrderDetailActivity">
+
+    <ImageView
+        android:id="@+id/ivBack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_chevron_left" />
 
     <TextView
         android:id="@+id/tvTitle"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:text="Đơn hàng"
-        android:textSize="32sp"
+        android:layout_marginTop="18dp"
+        android:text="Chi tiết đơn hàng"
         android:textStyle="bold"
-        android:textAlignment="center"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:textSize="20sp"
+        app:layout_constraintStart_toEndOf="@id/ivBack"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
@@ -77,70 +84,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvDatetime" />
 
-    <LinearLayout
-        android:id="@+id/llActions"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:weightSum="2"
-        android:layout_margin="40dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
-
-        <FrameLayout
-            style="?android:attr/buttonStyle"
-            android:id="@+id/btnReturn"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="#00000000">
-
-            <TextView
-                style="?android:attr/buttonStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:background="@null"
-                android:clickable="false"
-                android:drawableStart="@drawable/ic_arrow_back"
-                android:drawablePadding="8dp"
-                android:focusable="false"
-                android:gravity="center"
-                android:minHeight="0dp"
-                android:minWidth="0dp"
-                android:text="Quay lại"
-                android:textAllCaps="false"/>
-        </FrameLayout>
-
-        <FrameLayout
-            style="?android:attr/buttonStyle"
-            android:id="@+id/btnDone"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginStart="20dp"
-            android:background="@drawable/rectangle_green_rounded_20dp">
-
-            <TextView
-                style="?android:attr/buttonStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:background="@null"
-                android:clickable="false"
-                android:drawableStart="@drawable/ic_done_white"
-                android:drawablePadding="8dp"
-                android:focusable="false"
-                android:gravity="center"
-                android:minHeight="0dp"
-                android:minWidth="0dp"
-                android:text="Đã xong"
-                android:textColor="#ffffff"
-                android:textAllCaps="false"/>
-        </FrameLayout>
-
-    </LinearLayout>
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvDishes"
         android:layout_width="0dp"
@@ -149,7 +92,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvSubtotal"
-        app:layout_constraintBottom_toTopOf="@id/llActions"
+        app:layout_constraintBottom_toBottomOf="parent"
         tools:listitem="@layout/order_detail_item"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

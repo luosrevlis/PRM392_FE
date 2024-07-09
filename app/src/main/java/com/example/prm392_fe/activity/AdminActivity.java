@@ -3,7 +3,6 @@ package com.example.prm392_fe.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.AbsListView;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -116,23 +115,26 @@ public class AdminActivity extends AppCompatActivity {
                     OrderSearchResponse orderResponse = response.body();
                     if (orderResponse.getResult().getItems().length == 0) {
                         isEndOfList = true;
+                        Toast.makeText(AdminActivity.this, "Đã xem hết các đơn hàng!", Toast.LENGTH_SHORT).show();
                         return;
                     }
                     if (orderResponse.getStatusCode() == 200) {
                         addOrdersToList(orderResponse.getResult().getItems()); // Append new data
                     } else {
                         Toast.makeText(AdminActivity.this, orderResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                        Log.e(TAG, orderResponse.getMessage());
                     }
                 } else {
-                    Toast.makeText(AdminActivity.this, "Failed to load orders", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AdminActivity.this, "Lấy danh sách đơn hàng thất bại. Hãy thử lại sau.", Toast.LENGTH_SHORT).show();
+                    Log.e(TAG, "Server response unsuccessful.");
                 }
             }
 
             @Override
             public void onFailure(Call<OrderSearchResponse> call, Throwable throwable) {
                 isLoading = false;
-                Toast.makeText(AdminActivity.this, "Failed to load orders", Toast.LENGTH_SHORT).show();
-                Log.e(TAG, "Error loading orders", throwable);
+                Toast.makeText(AdminActivity.this, "Lỗi kết nối. Hãy thử lại sau.", Toast.LENGTH_SHORT).show();
+                Log.e(TAG, "Order history call failed", throwable);
             }
         });
     }
@@ -143,7 +145,7 @@ public class AdminActivity extends AppCompatActivity {
     }
 
     private void navigateToOrderDetailPage(int orderId) {
-        Intent intent = new Intent(AdminActivity.this, OrderDetailActivity.class);
+        Intent intent = new Intent(AdminActivity.this, AdminOrderDetailActivity.class);
         intent.putExtra("orderID", orderId);
         startActivityForResult(intent, REQUEST_CODE_ORDER_DETAIL);
     }

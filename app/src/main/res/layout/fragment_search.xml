@@ -13,7 +13,7 @@
             android:id="@+id/btnBack"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/baseline_chevron_left_24"
+            android:src="@drawable/ic_chevron_left"
             android:tint="@color/white"
             android:scaleType="fitCenter"
             android:layout_alignParentLeft="true"
@@ -39,7 +39,7 @@
             android:padding="15dp"
             android:scaleType="fitCenter"
             android:layout_marginHorizontal="5dp"
-            android:src="@drawable/baseline_filter_list_24"
+            android:src="@drawable/ic_filter"
             android:background="@drawable/rectangle_green_rounded_20dp"
             android:tint="@color/white"/>
         <androidx.appcompat.widget.AppCompatImageButton

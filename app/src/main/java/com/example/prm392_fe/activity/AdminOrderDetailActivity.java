@@ -17,7 +17,6 @@ import com.example.prm392_fe.R;
 import com.example.prm392_fe.adapter.OrderDetailAdapter;
 import com.example.prm392_fe.api.OrderService;
 import com.example.prm392_fe.databinding.ActivityOrderDetailAdminBinding;
-import com.example.prm392_fe.databinding.ActivityOrderDetailBinding;
 import com.example.prm392_fe.model.EmptyResponse;
 import com.example.prm392_fe.model.Order;
 import com.example.prm392_fe.model.OrderDetailResponse;
@@ -34,8 +33,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class OrderDetailActivity extends AppCompatActivity {
-    ActivityOrderDetailBinding binding;
+public class AdminOrderDetailActivity extends AppCompatActivity {
+    ActivityOrderDetailAdminBinding binding;
     OrderService orderService;
     OrderDetailAdapter adapter;
 
@@ -43,7 +42,7 @@ public class OrderDetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        binding = ActivityOrderDetailBinding.inflate(getLayoutInflater());
+        binding = ActivityOrderDetailAdminBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -66,8 +65,8 @@ public class OrderDetailActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<OrderDetailResponse> call, Response<OrderDetailResponse> response) {
                 if (!response.isSuccessful() || response.body() == null) {
-                    Toast.makeText(OrderDetailActivity.this, "Lỗi server. Hãy thử lại sau.", Toast.LENGTH_SHORT).show();
-                    Log.e("OrderDetailActivity", "Response not successful");
+                    Toast.makeText(AdminOrderDetailActivity.this, "Lỗi server. Hãy thử lại sau.", Toast.LENGTH_SHORT).show();
+                    Log.e("AdminOrderDetailActivity", "Response not successful");
                     finish();
                     return;
                 }
@@ -76,8 +75,8 @@ public class OrderDetailActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<OrderDetailResponse> call, Throwable throwable) {
-                Toast.makeText(OrderDetailActivity.this, "Lỗi kết nối. Hãy thử lại sau.", Toast.LENGTH_SHORT).show();
-                Log.e("OrderDetailActivity", "Order detail call failed", throwable);
+                Toast.makeText(AdminOrderDetailActivity.this, "Lỗi kết nối. Hãy thử lại sau.", Toast.LENGTH_SHORT).show();
+                Log.e("AdminOrderDetailActivity", "Order detail call failed", throwable);
             }
         });
     }
@@ -115,6 +114,34 @@ public class OrderDetailActivity extends AppCompatActivity {
         adapter = new OrderDetailAdapter(this, new ArrayList<>(Arrays.asList(order.getOrderDetails())));
         binding.rvDishes.setLayoutManager(new LinearLayoutManager(this));
         binding.rvDishes.setAdapter(adapter);
-        binding.ivBack.setOnClickListener(v -> finish());
+        binding.btnReturn.setOnClickListener(v -> {
+            setResult(RESULT_CANCELED);
+            finish();
+        });
+        binding.btnDone.setOnClickListener(v -> {
+            updateOrderStatus(order.getOrderID());
+            setResult(RESULT_OK);
+            finish();
+        });
+    }
+
+    private void updateOrderStatus(int orderId) {
+        Call<EmptyResponse> call = orderService.updateOrderStatus(orderId);
+        call.enqueue(new Callback<EmptyResponse>() {
+            @Override
+            public void onResponse(Call<EmptyResponse> call, Response<EmptyResponse> response) {
+                if (!response.isSuccessful()) {
+                    Toast.makeText(AdminOrderDetailActivity.this, "Cập nhật tình trạng đơn hàng thất bại. Hãy thử lại sau.", Toast.LENGTH_SHORT).show();
+                    Log.e("AdminOrderDetailActivity", "Response unsuccessful.");
+                }
+                Toast.makeText(AdminOrderDetailActivity.this, "Cập nhật tình trạng đơn hàng thành công.", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(Call<EmptyResponse> call, Throwable throwable) {
+                Toast.makeText(AdminOrderDetailActivity.this, "Lỗi kết nối. Hãy thử lại sau.", Toast.LENGTH_SHORT).show();
+                Log.e("AdminOrderDetailActivity", "Order status update call failed", throwable);
+            }
+        });
     }
 }

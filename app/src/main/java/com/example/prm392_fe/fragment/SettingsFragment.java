@@ -20,6 +20,7 @@ import androidx.fragment.app.Fragment;
 import com.example.prm392_fe.R;
 import com.example.prm392_fe.activity.LoginActivity;
 import com.example.prm392_fe.activity.MainActivity;
+import com.example.prm392_fe.activity.OrderHistoryActivity;
 import com.example.prm392_fe.activity.UserProfileActivity;
 import com.example.prm392_fe.api.DishService;
 import com.example.prm392_fe.api.SettingService;
@@ -54,41 +55,44 @@ public class SettingsFragment extends Fragment {
     SettingService settingService;
     Button logout;
     RelativeLayout info;
+    RelativeLayout history;
 
-    private void getCurrentUser(){
-            Call<UserInfoResponse> call = settingService.getCurrent();
+    private void getCurrentUser() {
+        Call<UserInfoResponse> call = settingService.getCurrent();
 
-            call.enqueue(new Callback<UserInfoResponse>() {
-                @Override
-                public void onResponse(Call<UserInfoResponse> call, Response<UserInfoResponse> response) {
-                    UserInfoResponse body = response.body();
-                    if (body == null) {
-                        Toast.makeText(getActivity(), "Lỗi server. Hãy thử lại sau.", Toast.LENGTH_SHORT).show();
-                        Log.e("SettingsFragment", "Response body is null");
-                        return;
-                    }
-
-                    UserInfo userInfo = body.getResult();
-                    userName.setText(userInfo.getFullName());
+        call.enqueue(new Callback<UserInfoResponse>() {
+            @Override
+            public void onResponse(Call<UserInfoResponse> call, Response<UserInfoResponse> response) {
+                UserInfoResponse body = response.body();
+                if (body == null) {
+                    Toast.makeText(getActivity(), "Lỗi server. Hãy thử lại sau.", Toast.LENGTH_SHORT).show();
+                    Log.e("SettingsFragment", "Response body is null");
+                    return;
                 }
 
-                @Override
-                public void onFailure(Call<UserInfoResponse> call, Throwable throwable) {
-                    Toast.makeText(getActivity(), "Lỗi kết nối. Hãy thử lại sau.", Toast.LENGTH_SHORT).show();
-                    Log.e("SettingsFragment", "User call failed", throwable);
-                }
-            });
+                UserInfo userInfo = body.getResult();
+                userName.setText(userInfo.getFullName());
+            }
 
+            @Override
+            public void onFailure(Call<UserInfoResponse> call, Throwable throwable) {
+                Toast.makeText(getActivity(), "Lỗi kết nối. Hãy thử lại sau.", Toast.LENGTH_SHORT).show();
+                Log.e("SettingsFragment", "User call failed", throwable);
+            }
+        });
     }
+
     private void performLogout() {
         deleteToken();
         navigateToLogin();
     }
+
     private void deleteToken() {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.remove("token"); // Remove the key "token"
         editor.apply();
     }
+
     private void navigateToLogin() {
         Intent intent = new Intent(getActivity(), LoginActivity.class);
         startActivity(intent);
@@ -105,10 +109,12 @@ public class SettingsFragment extends Fragment {
         userName = rootview.findViewById(R.id.username);
         logout = rootview.findViewById(R.id.logout_button);
         info = rootview.findViewById(R.id.information);
+        history = rootview.findViewById(R.id.history);
         getCurrentUser();
         logout.animate().translationY(0).alpha(1).setDuration(800).setStartDelay(700).start();
         logout.setOnClickListener(v -> performLogout());
         info.setOnClickListener(v -> navigateToUserProfile());
+        history.setOnClickListener(v -> startActivity(new Intent(getActivity(), OrderHistoryActivity.class)));
         return rootview;
     }
 

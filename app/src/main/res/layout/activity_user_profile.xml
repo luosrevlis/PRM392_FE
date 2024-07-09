@@ -6,36 +6,16 @@
     android:layout_height="match_parent"
     tools:context=".activity.UserProfileActivity">
 
-        <ImageView
+    <ImageView
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:src="@drawable/food8"
+        android:src="@drawable/food3"
         android:scaleType="centerCrop"
         app:layout_constraintVertical_bias="0"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
-    <ImageView
-        android:id="@+id/button_back"
-        android:layout_width="35dp"
-        android:layout_height="35dp"
-        android:src="@drawable/arrowleft"
-        android:layout_margin="20dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:clickable="true"/>
-    <TextView
-        android:id="@+id/save"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Lưu"
-        android:layout_margin="20dp"
-        android:textColor="#FFFFFF"
-        android:textSize="25dp"
-        android:clickable="true"/>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -49,68 +29,84 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
-        <RelativeLayout
+        <ImageView
+            android:id="@+id/button_back"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:src="@drawable/ic_chevron_left_white"
+            android:layout_margin="20dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/save"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="20dp">
-            <ImageView
-                android:id="@+id/user_image"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:src="@drawable/ic_user_white" />
-            <TextView
-                android:id="@+id/label_user_name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/user_image"
-                android:text="Tên:"
-                android:textColor="#FFFFFF"
-                android:textSize="20dp"
-                android:paddingTop="10dp"/>
-            <EditText
-                android:id="@+id/username"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/label_user_name"
-                />
-            <TextView
-                android:id="@+id/label_address"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/username"
-                android:text="Địa chỉ:"
-                android:paddingTop="10dp"
-                android:textColor="#FFFFFF"
-                android:textSize="20dp"/>
-            <EditText
-                android:id="@+id/address"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/label_address"
-                />
-            <TextView
-                android:id="@+id/label_email"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/address"
-                android:text="Email:"
-                android:paddingTop="10dp"
-                android:textColor="#FFFFFF"
-                android:textSize="20dp"/>
-            <TextView
-                android:id="@+id/email"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/label_email"
+            android:text="Lưu"
+            android:layout_margin="20dp"
+            android:textColor="#FFFFFF"
+            android:textSize="24sp" />
 
-                android:paddingTop="10dp"
-                android:textColor="#3C3B3B"
-                android:textSize="18dp"/>
-        </RelativeLayout>
+        <ImageView
+            android:id="@+id/user_image"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:src="@drawable/ic_user_white"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="40dp"/>
 
+        <TextView
+            android:id="@+id/label_user_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Tên:"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp"
+            android:paddingTop="10dp"
+            app:layout_constraintTop_toBottomOf="@id/user_image"/>
 
+        <EditText
+            android:id="@+id/username"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/label_user_name"/>
 
+        <TextView
+            android:id="@+id/label_address"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Địa chỉ:"
+            android:paddingTop="10dp"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp"
+            app:layout_constraintTop_toBottomOf="@id/username" />
+
+        <EditText
+            android:id="@+id/address"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/label_address" />
+
+        <TextView
+            android:id="@+id/label_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Email:"
+            android:paddingTop="10dp"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp"
+            app:layout_constraintTop_toBottomOf="@id/address" />
+
+        <TextView
+            android:id="@+id/email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="10dp"
+            android:textColor="#3C3B3B"
+            android:textSize="18sp"
+            app:layout_constraintTop_toBottomOf="@id/label_email" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
