@@ -20,6 +20,7 @@ import com.example.prm392_fe.databinding.ActivityOrderDetailAdminBinding;
 import com.example.prm392_fe.model.EmptyResponse;
 import com.example.prm392_fe.model.Order;
 import com.example.prm392_fe.model.OrderDetailResponse;
+import com.example.prm392_fe.model.UpdateOrderRequest;
 
 import java.text.DecimalFormat;
 import java.text.ParseException;
@@ -126,7 +127,9 @@ public class AdminOrderDetailActivity extends AppCompatActivity {
     }
 
     private void updateOrderStatus(int orderId) {
-        Call<EmptyResponse> call = orderService.updateOrderStatus(orderId);
+        UpdateOrderRequest updateOrderRequest = new UpdateOrderRequest();
+        updateOrderRequest.setOrderEvent(1);
+        Call<EmptyResponse> call = orderService.updateOrderStatus(orderId, updateOrderRequest);
         call.enqueue(new Callback<EmptyResponse>() {
             @Override
             public void onResponse(Call<EmptyResponse> call, Response<EmptyResponse> response) {

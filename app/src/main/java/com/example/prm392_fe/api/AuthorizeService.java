@@ -11,7 +11,7 @@ import retrofit2.http.POST;
 
 public interface AuthorizeService {
 
-    String AUTH = "/api/Auth";
+    String AUTH = "/api";
     @POST(AUTH + "/login")
     Call<LoginResponse> login(@Body LoginRequest loginRequest);
 

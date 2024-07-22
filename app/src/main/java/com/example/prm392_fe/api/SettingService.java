@@ -14,7 +14,7 @@ import retrofit2.http.PUT;
 import retrofit2.http.Query;
 
 public interface SettingService {
-    String USER_SETTING = "/api/Account";
+    String USER_SETTING = "/api/accounts";
 
     @GET(USER_SETTING + "/current")
     Call<UserInfoResponse> getCurrent();
