@@ -9,7 +9,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class APIClient {
-    private static final String BASE_URL = "http://ec2-18-141-138-241.ap-southeast-1.compute.amazonaws.com:8000";
+    private static final String BASE_URL = "http://ec2-13-229-250-208.ap-southeast-1.compute.amazonaws.com:8000";
     private static Retrofit retrofit;
 
     public static Retrofit getClient(Context context) {

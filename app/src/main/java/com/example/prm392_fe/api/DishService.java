@@ -13,11 +13,11 @@ import retrofit2.http.Headers;
 import retrofit2.http.Query;
 
 public interface DishService {
-    String DISH_ENDPOINT = "/api/Dish";
+    String DISH_ENDPOINT = "/api/dishes";
 
     @GET(DISH_ENDPOINT + "/random")
     Call<RandomDishResponse> getRandomDish(@Query("meal") int meal);
-    @GET(DISH_ENDPOINT + "/dishes")
+    @GET(DISH_ENDPOINT)
     Call<PagedListDishResponse> getDishesByFilter(
             @Query("Status")@Nullable Integer status,
             @Query("Name")@Nullable String name,
