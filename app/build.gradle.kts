@@ -1,5 +1,6 @@
 plugins {
     alias(libs.plugins.android.application)
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -35,6 +36,8 @@ android {
 }
 
 dependencies {
+    implementation(libs.signalr)
+    implementation(libs.firebase.messaging)
     annotationProcessor(libs.lombok)
     compileOnly(libs.lombok)
     implementation(libs.appcompat)
@@ -46,6 +49,8 @@ dependencies {
     implementation(libs.logging.interceptor)
     implementation(libs.picasso)
     implementation(files("libs/zpdk-release-v3.1.aar"))
+    implementation(platform("com.google.firebase:firebase-bom:33.1.2"))
+    implementation("com.google.firebase:firebase-analytics")
     implementation(libs.okhttp)
     implementation(libs.commons.codec)
     testImplementation(libs.junit)

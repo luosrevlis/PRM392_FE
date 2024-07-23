@@ -101,7 +101,7 @@ public class LoginTabFragment extends Fragment {
                     LoginResponse loginResponse = response.body();
                     if (loginResponse != null && loginResponse.getStatusCode() == 200) {
                         LoginResult loginResult = loginResponse.getLoginResult();
-                        saveToken(loginResult.token);
+                        saveInfo(loginResult.token, loginResult.accountID);
                         if (loginResult.isAdmin){
                             navigateToAdminActivity();
                         }
@@ -142,9 +142,10 @@ public class LoginTabFragment extends Fragment {
         return true;
     }
 
-    private void saveToken(String token) {
+    private void saveInfo(String token, int accountId) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString("token", token);
+        editor.putInt("accoundID", accountId);
         editor.apply();
     }
 
