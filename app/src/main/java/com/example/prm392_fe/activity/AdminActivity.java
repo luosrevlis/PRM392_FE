@@ -102,6 +102,7 @@ public class AdminActivity extends AppCompatActivity {
             currentPage = 1;
             isEndOfList = false;
             fetchOrders(currentPage, pageSize);
+            orderAdapter.notifyDataSetChanged();
         }
     }
 
@@ -163,7 +164,11 @@ public class AdminActivity extends AppCompatActivity {
                     Log.e("AdminActivity", "Response unsuccessful.");
                 }
                 Toast.makeText(AdminActivity.this, "Cập nhật tình trạng đơn hàng thành công.", Toast.LENGTH_SHORT).show();
+                listOrder.clear();
+                currentPage = 1;
+                isEndOfList = false;
                 fetchOrders(currentPage, pageSize);
+                orderAdapter.notifyDataSetChanged();
             }
 
             @Override

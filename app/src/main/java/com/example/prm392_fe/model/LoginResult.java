@@ -14,6 +14,5 @@ import lombok.Setter;
 public class LoginResult implements Serializable {
     public String token;
     public boolean isAdmin;
-
-
+    public int accountID;
 }

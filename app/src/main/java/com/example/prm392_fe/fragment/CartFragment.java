@@ -26,6 +26,7 @@ import com.example.prm392_fe.model.CreateOrderDetail;
 import com.example.prm392_fe.model.CreateOrderRequest;
 import com.example.prm392_fe.model.CreateOrderResponse;
 import com.example.prm392_fe.model.EmptyResponse;
+import com.example.prm392_fe.model.UpdateOrderRequest;
 import com.example.prm392_fe.model.UpdateTransactionRequest;
 import com.example.prm392_fe.zalo.Api.CreateOrder;
 
@@ -197,9 +198,9 @@ public class CartFragment extends Fragment {
     }
 
     private void callUpdateTransaction() {
-        UpdateTransactionRequest request = new UpdateTransactionRequest();
-        request.setBankCode("zalopay");
-        Call<EmptyResponse> call = orderService.updateTransaction(orderId, request);
+        UpdateOrderRequest request = new UpdateOrderRequest();
+        request.setOrderEvent(0);
+        Call<EmptyResponse> call = orderService.updateOrderStatus(orderId, request);
         call.enqueue(new Callback<EmptyResponse>() {
             @Override
             public void onResponse(Call<EmptyResponse> call, Response<EmptyResponse> response) {

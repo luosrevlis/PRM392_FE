@@ -13,6 +13,8 @@ activity = "1.9.0"
 constraintlayout = "2.1.4"
 okhttp = "4.6.0"
 picasso = "2.5.2"
+signalr = "9.0.0-preview.6.24328.4"
+firebaseMessaging = "24.0.0"
 
 [libraries]
 commons-codec = { module = "commons-codec:commons-codec", version.ref = "commonsCodec" }
@@ -29,6 +31,8 @@ constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayo
 okhttp = { module = "com.squareup.okhttp3:okhttp", version.ref = "okhttp" }
 picasso = { module = "com.squareup.picasso:picasso", version.ref = "picasso" }
 retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "converterGson" }
+signalr = { group = "com.microsoft.signalr", name = "signalr", version.ref = "signalr" }
+firebase-messaging = { group = "com.google.firebase", name = "firebase-messaging", version.ref = "firebaseMessaging" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
